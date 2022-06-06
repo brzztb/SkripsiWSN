@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_history"
+    android:orientation="horizontal"
+    android:padding="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/rounded_corner"
+    app:layout_goneMarginBottom="10dp">
+    <TextView
+        android:id="@+id/tv_rvhistory_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#1E90FF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:text="Node 1" />
+    <ImageView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/iv_divider"
+        android:src="@android:drawable/divider_horizontal_dark"
+        android:background="@color/black"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvhistory_name"
+        android:scaleType="fitXY"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp" />
+    <TextView
+    android:id="@+id/tv_rvhistory_keasaman"
+    android:layout_width="175dp"
+    android:layout_height="wrap_content"
+    android:textColor="@color/white"
+    android:textSize="15sp"
+    android:textStyle="bold"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/iv_divider"
+    android:text="Keasaman(pH): " />
+    <TextView
+        android:id="@+id/tv_rvhistory_keasaman_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_divider"
+        android:text="5,0" />
+    <TextView
+        android:id="@+id/tv_rvhistory_kelembaban"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvhistory_keasaman"
+        android:text="Kelembaban tanah: " />
+    <TextView
+        android:id="@+id/tv_rvhistory_kelembaban_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvhistory_keasaman_text"
+        android:text="10%" />
+    <TextView
+        android:id="@+id/tv_rvhistory_tanah"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvhistory_kelembaban"
+        android:text="Suhu tanah: " />
+    <TextView
+        android:id="@+id/tv_rvhistory_tanah_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvhistory_kelembaban_text"
+        android:text="22C" />
+    <TextView
+        android:id="@+id/tv_rvhistory_udara"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvhistory_tanah"
+        android:text="Suhu udara: " />
+    <TextView
+        android:id="@+id/tv_rvhistory_udara_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvhistory_tanah_text"
+        android:text="22C" />
+    <TextView
+        android:id="@+id/tv_rvhistory_waktu"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvhistory_udara"
+        android:text="Waktu sensing: " />
+    <TextView
+        android:id="@+id/tv_rvhistory_waktu_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvhistory_udara_text"
+        android:text="2022-01-01 12:00:00" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

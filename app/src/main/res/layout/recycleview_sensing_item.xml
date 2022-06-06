@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_sensing"
+    android:orientation="horizontal"
+    android:padding="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@drawable/rounded_corner"
+    android:layout_marginBottom="10dp">
+
+    <ImageView
+        android:id="@+id/img_sensing"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/tes_icon" />
+    <TextView
+        android:id="@+id/tv_rvsensing_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#1E90FF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/img_sensing"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:text="Node 1" />
+    <TextView
+        android:id="@+id/tv_rvsensing_keasaman"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/img_sensing"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvsensing_name"
+        android:text="Keasaman(pH): " />
+    <TextView
+        android:id="@+id/tv_rvsensing_keasaman_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/tv_rvsensing_keasaman"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvsensing_name"
+        android:text="5,0" />
+    <TextView
+        android:id="@+id/tv_rvsensing_kelembaban"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/img_sensing"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvsensing_keasaman"
+        android:text="Kelembaban tanah: " />
+    <TextView
+        android:id="@+id/tv_rvsensing_kelembaban_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/tv_rvsensing_kelembaban"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvsensing_keasaman_text"
+        android:text="1.4%" />
+    <TextView
+        android:id="@+id/tv_rvsensing_tanah"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/img_sensing"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvsensing_kelembaban"
+        android:text="Suhu tanah: " />
+    <TextView
+        android:id="@+id/tv_rvsensing_tanah_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/tv_rvsensing_tanah"
+        app:layout_constraintTop_toBottomOf="@+id/tv_rvsensing_kelembaban_text"
+        android:text="25C" />
+    <TextView
+        android:id="@+id/tv_rvsensing_udara"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/img_sensing"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvsensing_tanah"
+        android:text="Suhu udara: " />
+    <TextView
+        android:id="@+id/tv_rvsensing_udara_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/tv_rvsensing_udara"
+        app:layout_constraintTop_toBottomOf="@+id/tv_rvsensing_tanah_text"
+        android:text="25C" />
+    <TextView
+        android:id="@+id/tv_rvsensing_waktu"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/img_sensing"
+        app:layout_constraintBottom_toTopOf="@id/tv_rvsensing_waktu_text"
+        android:text="Waktu sensing: " />
+    <TextView
+        android:id="@+id/tv_rvsensing_waktu_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/img_sensing"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="2022-01-01 12:50:50" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

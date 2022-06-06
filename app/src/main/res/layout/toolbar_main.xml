@@ -1,0 +1,24 @@
+<Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#b22716">
+
+    <ImageView
+        android:id="@+id/btn_back"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/back_icon"
+        />
+    <TextView
+        android:id="@+id/tv_toolbar_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:textStyle="bold"
+        android:text="Menu"
+        android:textSize="35sp"
+        />
+
+</Toolbar>
