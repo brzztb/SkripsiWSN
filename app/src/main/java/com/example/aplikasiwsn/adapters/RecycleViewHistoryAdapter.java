@@ -13,17 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.models.NodeSensor;
+import com.example.aplikasiwsn.models.Tanah;
 
 import java.util.ArrayList;
 
 public class RecycleViewHistoryAdapter extends RecyclerView.Adapter<RecycleViewHistoryAdapter.ViewHolder>{
-    private ArrayList<NodeSensor> nodes;
+    private ArrayList<Tanah> nodes;
     private LayoutInflater mInflater;
     private RecycleViewHistoryAdapter.ItemClickListener mClickListener;
     private Context context;
 
     // data is passed into the constructor
-    public RecycleViewHistoryAdapter(Context context, ArrayList<NodeSensor> nodes) {
+    public RecycleViewHistoryAdapter(Context context, ArrayList<Tanah> nodes) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.nodes = nodes;
@@ -40,7 +41,19 @@ public class RecycleViewHistoryAdapter extends RecyclerView.Adapter<RecycleViewH
 
     @Override
     public void onBindViewHolder(@NonNull RecycleViewHistoryAdapter.ViewHolder holder, int position) {
+        String namaNode = "Node " + nodes.get(position).getKode_petak();
+        String keasaman = nodes.get(position).getPh_tanah();
+        String kelembabanTanah = nodes.get(position).getKelembaban_tanah();
+        String suhuTanah = nodes.get(position).getSuhu_tanah();
+        String suhuUdara = nodes.get(position).getSuhu_udara();
+        String waktu = nodes.get(position).getWaktu_sensing();
 
+        holder.tv_rvhistory_name.setText(namaNode);
+        holder.tv_rvhistory_keasaman_text.setText(keasaman);
+        holder.tv_rvhistory_kelembaban_text.setText(kelembabanTanah);
+        holder.tv_rvhistory_tanah_text.setText(suhuTanah);
+        holder.tv_rvhistory_udara_text.setText(suhuUdara);
+        holder.tv_rvhistory_waktu_text.setText(waktu);
     }
 
     // total number of cells

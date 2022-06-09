@@ -14,4 +14,3 @@ public interface NodeService {
     @GET("sql")
     Call<ArrayList<NodeSensorStatus>> getNodeSensor();
 }
-
