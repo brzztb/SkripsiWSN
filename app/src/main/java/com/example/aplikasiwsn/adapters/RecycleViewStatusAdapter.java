@@ -15,20 +15,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.models.NodeSensor;
+import com.example.aplikasiwsn.models.NodeSensorStatus;
 
 import java.util.ArrayList;
 
 public class RecycleViewStatusAdapter extends RecyclerView.Adapter<RecycleViewStatusAdapter.ViewHolder> {
-    private ArrayList<NodeSensor> nodes;
+    private ArrayList<NodeSensorStatus> nodeArrayListStatusData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private Context context;
 
     // data is passed into the constructor
-    public RecycleViewStatusAdapter(Context context, ArrayList<NodeSensor> nodes) {
+    public RecycleViewStatusAdapter(Context context, ArrayList<NodeSensorStatus> nodeArrayListStatusData) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
-        this.nodes = nodes;
+        this.nodeArrayListStatusData = nodeArrayListStatusData;
     }
 
     // inflates the cell layout from xml when needed
@@ -43,8 +44,8 @@ public class RecycleViewStatusAdapter extends RecyclerView.Adapter<RecycleViewSt
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String statusNode = nodes.get(position).getStatus();
-        String statusSensingNode = nodes.get(position).getStatusSensing();
+        String statusNode = nodeArrayListStatusData.get(position).getStatus_node();
+        String statusSensingNode = nodeArrayListStatusData.get(position).getStatus_sensing();
 
         if (statusNode.equalsIgnoreCase("Online")) {
             holder.tv_rvstatus_status_text.setTextColor(context.getResources().getColor(R.color.lime));
@@ -58,18 +59,18 @@ public class RecycleViewStatusAdapter extends RecyclerView.Adapter<RecycleViewSt
         else {
             holder.tv_rvstatus_statussensing_text.setTextColor(context.getResources().getColor(R.color.red));
         }
-        holder.tv_rvstatus_statussensing_text.setText(nodes.get(position).getStatusSensing());
+        holder.tv_rvstatus_statussensing_text.setText(nodeArrayListStatusData.get(position).getStatus_sensing());
 
-        holder.img_status.setImageResource(nodes.get(position).getImageId());
-        holder.tv_rvstatus_name.setText(nodes.get(position).getName());
-        holder.tv_rvstatus_status_text.setText(nodes.get(position).getStatus());
-        holder.tv_rvstatus_statussensing_text.setText(nodes.get(position).getStatusSensing());
+        holder.img_status.setImageResource(R.drawable.tes_icon);
+        holder.tv_rvstatus_name.setText(nodeArrayListStatusData.get(position).getNama_node());
+        holder.tv_rvstatus_status_text.setText(nodeArrayListStatusData.get(position).getStatus_node());
+        holder.tv_rvstatus_statussensing_text.setText(nodeArrayListStatusData.get(position).getStatus_sensing());
     }
 
     // total number of cells
     @Override
     public int getItemCount() {
-        return nodes.size();
+        return nodeArrayListStatusData.size();
     }
 
 
