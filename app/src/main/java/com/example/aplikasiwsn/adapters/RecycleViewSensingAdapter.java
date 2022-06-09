@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,17 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.models.NodeSensor;
+import com.example.aplikasiwsn.models.Tanah;
 
 import java.util.ArrayList;
 
 public class RecycleViewSensingAdapter extends RecyclerView.Adapter<RecycleViewSensingAdapter.ViewHolder> {
-    private ArrayList<NodeSensor> nodes;
+    private ArrayList<Tanah> nodes;
     private LayoutInflater mInflater;
     private RecycleViewSensingAdapter.ItemClickListener mClickListener;
     private Context context;
 
     // data is passed into the constructor
-    public RecycleViewSensingAdapter(Context context, ArrayList<NodeSensor> nodes) {
+    public RecycleViewSensingAdapter(Context context, ArrayList<Tanah> nodes) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.nodes = nodes;
@@ -41,13 +43,29 @@ public class RecycleViewSensingAdapter extends RecyclerView.Adapter<RecycleViewS
 
     @Override
     public void onBindViewHolder(@NonNull RecycleViewSensingAdapter.ViewHolder holder, int position) {
-        holder.img_sensing.setImageResource(nodes.get(position).getImageId());
-        holder.tv_rvsensing_name.setText(nodes.get(position).getName());
-        holder.tv_rvsensing_keasaman_text.setText(nodes.get(position).getKeasaman());
-        holder.tv_rvsensing_kelembaban_text.setText(nodes.get(position).getKelembaban());
-        holder.tv_rvsensing_tanah_text.setText(nodes.get(position).getSuhuTanah());
-        holder.tv_rvsensing_udara_text.setText(nodes.get(position).getSuhuUdara());
-        holder.tv_rvsensing_waktu_text.setText(nodes.get(position).getWaktu());
+        if (nodes.get(position).getKode_petak().equalsIgnoreCase("1")) {
+            holder.img_sensing.setImageResource(R.drawable.back_icon);
+        }
+        else if (nodes.get(position).getKode_petak().equalsIgnoreCase("2")){
+            holder.img_sensing.setImageResource(R.drawable.tes_icon);
+        }
+        else if (nodes.get(position).getKode_petak().equalsIgnoreCase("3")){
+            holder.img_sensing.setImageResource(R.drawable.back_icon);
+        }
+
+        String namaNode = "Node " + nodes.get(position).getKode_petak();
+        String keasaman = nodes.get(position).getPh_tanah();
+        String kelembabanTanah = nodes.get(position).getKelembaban_tanah();
+        String suhuTanah = nodes.get(position).getSuhu_tanah();
+        String suhuUdara = nodes.get(position).getSuhu_udara();
+        String waktu = nodes.get(position).getWaktu_sensing();
+
+        holder.tv_rvsensing_name.setText(namaNode);
+        holder.tv_rvsensing_keasaman_text.setText(keasaman);
+        holder.tv_rvsensing_kelembaban_text.setText(kelembabanTanah);
+        holder.tv_rvsensing_tanah_text.setText(suhuTanah);
+        holder.tv_rvsensing_udara_text.setText(suhuUdara);
+        holder.tv_rvsensing_waktu_text.setText(waktu);
     }
 
     // total number of cells

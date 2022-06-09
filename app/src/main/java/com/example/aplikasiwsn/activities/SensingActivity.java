@@ -1,9 +1,11 @@
 package com.example.aplikasiwsn.activities;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,21 +14,34 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.adapters.RecycleViewSensingAdapter;
 import com.example.aplikasiwsn.models.NodeSensor;
+import com.example.aplikasiwsn.models.Tanah;
+import com.example.aplikasiwsn.services.SensingService;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SensingActivity extends AppCompatActivity {
 
     RecycleViewSensingAdapter sensingAdapter;
-    private ArrayList<NodeSensor> arrOfNodes;
     ImageView btn_back;
     TextView toolbarName;
+    private ArrayList<Tanah> sensingArrayListData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensing);
-        arrOfNodes = new ArrayList<>();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.43.153:8000/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
         this.btn_back = findViewById(R.id.btn_back);
         this.toolbarName = findViewById(R.id.tv_toolbar_name);
         this.toolbarName.setText("Sensing");
@@ -38,19 +53,33 @@ public class SensingActivity extends AppCompatActivity {
             }
         });
 
-        addArrOfNodes(R.drawable.tes_icon, "Node 1", "4.4", "2.5%", "25C", "23C", "2022-01-01 12:00:00");
-        addArrOfNodes(R.drawable.tes_icon, "Node 2", "1.4", "5.0%", "22C", "22C", "2022-01-01 12:10:00");
-        addArrOfNodes(R.drawable.tes_icon, "Node 3", "1.67", "3.7%", "21C", "35C", "2022-01-01 12:53:00");
+        SensingService sensingService = retrofit.create(SensingService.class);
 
-        // set up the RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.rvSensing);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        sensingAdapter = new RecycleViewSensingAdapter(this, arrOfNodes);
-        recyclerView.setAdapter(sensingAdapter);
+        final ProgressDialog progressDialog = new ProgressDialog(SensingActivity.this);
+        progressDialog.setCancelable(false); // set cancelable to false
+        progressDialog.setMessage("Please Wait"); // set message
+        progressDialog.show(); // show progress dialog
+
+        sensingService.getSensing().enqueue(new Callback<ArrayList<Tanah>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Tanah>> call, Response<ArrayList<Tanah>> response) {
+                progressDialog.dismiss();
+                sensingArrayListData = response.body();
+                setDataInRecycleView();
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Tanah>> call, Throwable t) {
+                Toast.makeText(SensingActivity.this, "Load data failed", Toast.LENGTH_LONG).show();
+                progressDialog.dismiss(); //dismiss progress dialog
+            }
+        });
     }
 
-    private void addArrOfNodes(Integer img, String name, String ph, String kelembaban, String tanah, String udara, String waktu) {
-        NodeSensor nodeSensor = new NodeSensor(img, name, ph, kelembaban, tanah, udara, waktu);
-        arrOfNodes.add(nodeSensor);
+    private void setDataInRecycleView() {// set up the RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.rvSensing);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        sensingAdapter = new RecycleViewSensingAdapter(this, sensingArrayListData);
+        recyclerView.setAdapter(sensingAdapter);
     }
 }
