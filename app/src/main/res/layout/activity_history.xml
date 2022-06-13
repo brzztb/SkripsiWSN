@@ -15,11 +15,20 @@
         app:layout_constraintLeft_toLeftOf="parent"
         />
 
+    <SearchView
+        android:id="@+id/sc_textSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/ic_toolbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:queryHint="Search Here..."
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHistory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ic_toolbar"/>
+        app:layout_constraintTop_toBottomOf="@+id/sc_textSearch"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

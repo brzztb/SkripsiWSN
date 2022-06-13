@@ -10,6 +10,7 @@ public class Tanah {
     private String kelembaban_udara;
     private String kode_petak;
     private String waktu_sensing;
+    private String nama_node;
 
     public String getId_tanah() {
         return id_tanah;
@@ -49,6 +50,14 @@ public class Tanah {
 
     public void setKelembaban_tanah(String kelembaban_tanah) {
         this.kelembaban_tanah = kelembaban_tanah;
+    }
+
+    public String getNama_node() {
+        return nama_node;
+    }
+
+    public void setNama_node(String nama_node) {
+        this.nama_node = nama_node;
     }
 
     public String getSuhu_udara() {

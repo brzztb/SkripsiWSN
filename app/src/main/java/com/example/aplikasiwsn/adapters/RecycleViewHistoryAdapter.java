@@ -48,6 +48,8 @@ public class RecycleViewHistoryAdapter extends RecyclerView.Adapter<RecycleViewH
         String suhuUdara = nodes.get(position).getSuhu_udara();
         String waktu = nodes.get(position).getWaktu_sensing();
 
+        nodes.get(position).setNama_node(namaNode);
+
         holder.tv_rvhistory_name.setText(namaNode);
         holder.tv_rvhistory_keasaman_text.setText(keasaman);
         holder.tv_rvhistory_kelembaban_text.setText(kelembabanTanah);
@@ -100,4 +102,10 @@ public class RecycleViewHistoryAdapter extends RecyclerView.Adapter<RecycleViewH
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+
+    public void filteredList(ArrayList<Tanah> filteredList) {
+        nodes = filteredList;
+        notifyDataSetChanged();
+    }
+
 }
