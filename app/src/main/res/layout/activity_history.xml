@@ -17,18 +17,40 @@
 
     <SearchView
         android:id="@+id/sc_textSearch"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/ic_toolbar"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/history_spinner"
         android:queryHint="Search Here..."
+        />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/history_spinner"
+        app:layout_constraintRight_toRightOf="@id/btn_sort"
+        app:layout_constraintTop_toBottomOf="@+id/ic_toolbar"
+        app:layout_constraintBottom_toTopOf="@id/rvHistory"
+        app:layout_constraintRight_toLeftOf="@id/btn_sort"
+        />
+
+    <ImageView
+        android:id="@+id/btn_sort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_unfold_more_24"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ic_toolbar"
+        app:layout_constraintBottom_toTopOf="@id/rvHistory"
         />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHistory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sc_textSearch"/>
+        app:layout_constraintTop_toBottomOf="@+id/sc_textSearch" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

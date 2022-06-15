@@ -6,8 +6,10 @@ import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface TanahService {
-    @GET("tanah")
-    Call<ArrayList<Tanah>> getNodeSensor();
+    @GET("tanah/{node}/{spinner}")
+    Call<ArrayList<Tanah>> getNodeSensor(@Path("node") String node, @Path("spinner") String spinnerMenu, @Query("sort") String sort);
 }

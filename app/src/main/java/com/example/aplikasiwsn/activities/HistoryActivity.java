@@ -3,8 +3,11 @@ package com.example.aplikasiwsn.activities;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,13 +29,21 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Path;
 
-public class HistoryActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
+public class HistoryActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, AdapterView.OnItemSelectedListener{
+    private boolean sortDesc = true;
     RecycleViewHistoryAdapter historyAdapter;
-    ImageView btn_back;
+    ImageView btn_back, btn_sort;
     TextView toolbarName;
     SearchView searchView;
     private ArrayList<Tanah> tanahArrayListData;
+    String[] spinnerMenu = {"Ph Tanah",
+                            "Suhu Tanah",
+                            "Kelembaban Tanah",
+                            "Suhu Udara",
+                            "Kelembaban Udara",
+                            "Waktu Sensing"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +56,7 @@ public class HistoryActivity extends AppCompatActivity implements SearchView.OnQ
                 .build();
 
         this.btn_back = findViewById(R.id.btn_back);
+        this.btn_sort = findViewById(R.id.btn_sort);
         this.toolbarName = findViewById(R.id.tv_toolbar_name);
         this.toolbarName.setText("Sensing History");
 
@@ -55,9 +67,29 @@ public class HistoryActivity extends AppCompatActivity implements SearchView.OnQ
             }
         });
 
+        this.btn_sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sortDesc) {
+                    sortDesc= false;
+                    btn_sort.setImageResource(R.drawable.ic_baseline_arrow_upward_24);
+                }
+                else {
+                    sortDesc = true;
+                    btn_sort.setImageResource(R.drawable.ic_baseline_arrow_downward_24);
+                }
+            }
+        });
+
         searchView = this.findViewById(R.id.sc_textSearch);
         searchView.setOnQueryTextListener(this);
 
+        Spinner spinner = findViewById(R.id.history_spinner);
+        spinner.setOnItemSelectedListener(this);
+
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,spinnerMenu);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(arrayAdapter);
 
         TanahService tanahService = retrofit.create(TanahService.class);
 
@@ -66,7 +98,7 @@ public class HistoryActivity extends AppCompatActivity implements SearchView.OnQ
         progressDialog.setMessage("Please Wait"); // set message
         progressDialog.show(); // show progress dialog
 
-        tanahService.getNodeSensor().enqueue(new Callback<ArrayList<Tanah>>() {
+        tanahService.getNodeSensor(searchView.getQuery().toString(), spinner.getSelectedItem().toString().toLowerCase(Locale.ROOT), Boolean.toString(this.sortDesc)).enqueue(new Callback<ArrayList<Tanah>>() {
             @Override
             public void onResponse(Call<ArrayList<Tanah>> call, Response<ArrayList<Tanah>> response) {
                 progressDialog.dismiss(); //dismiss progress dialog
@@ -112,12 +144,22 @@ public class HistoryActivity extends AppCompatActivity implements SearchView.OnQ
         // running a for loop to compare elements.
         for (Tanah item : tanahArrayListData) {
             // checking if the entered string matched with any item of our recycler view.
-            if (item.getNama_node().toLowerCase().contains(text.toLowerCase()) || item.getKode_petak().toLowerCase().contains(text.toLowerCase())) {
+            if (item.getNama_node().toLowerCase().contains(text.toLowerCase())) {
                 // if the item is matched we are
                 // adding it to our filtered list.
                 filteredlist.add(item);
             }
         }
         historyAdapter.filteredList(filteredlist);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
