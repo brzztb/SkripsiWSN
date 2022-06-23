@@ -59,12 +59,14 @@ public class RecycleViewSensingAdapter extends RecyclerView.Adapter<RecycleViewS
         String suhuTanah = nodes.get(position).getSuhu_tanah();
         String suhuUdara = nodes.get(position).getSuhu_udara();
         String waktu = nodes.get(position).getWaktu_sensing();
+        String kelembabanUdara = nodes.get(position).getKelembaban_udara();
 
         holder.tv_rvsensing_name.setText(namaNode);
         holder.tv_rvsensing_keasaman_text.setText(keasaman);
         holder.tv_rvsensing_kelembaban_text.setText(kelembabanTanah);
         holder.tv_rvsensing_tanah_text.setText(suhuTanah);
         holder.tv_rvsensing_udara_text.setText(suhuUdara);
+        holder.tv_rvsensing_kelembaban_udara_text.setText(kelembabanUdara);
         holder.tv_rvsensing_waktu_text.setText(waktu);
     }
 
@@ -84,6 +86,7 @@ public class RecycleViewSensingAdapter extends RecyclerView.Adapter<RecycleViewS
         TextView tv_rvsensing_tanah_text;
         TextView tv_rvsensing_udara_text;
         TextView tv_rvsensing_waktu_text;
+        TextView tv_rvsensing_kelembaban_udara_text;
         ConstraintLayout clSensing;
 
         ViewHolder(View itemView) {
@@ -95,6 +98,7 @@ public class RecycleViewSensingAdapter extends RecyclerView.Adapter<RecycleViewS
             tv_rvsensing_tanah_text = itemView.findViewById(R.id.tv_rvsensing_tanah_text);
             tv_rvsensing_udara_text = itemView.findViewById(R.id.tv_rvsensing_udara_text);
             tv_rvsensing_waktu_text = itemView.findViewById(R.id.tv_rvsensing_waktu_text);
+            tv_rvsensing_kelembaban_udara_text = itemView.findViewById(R.id.tv_rvsensing_kelembaban_udara_text);
             clSensing = itemView.findViewById(R.id.cl_sensing);
             itemView.setOnClickListener(this);
         }

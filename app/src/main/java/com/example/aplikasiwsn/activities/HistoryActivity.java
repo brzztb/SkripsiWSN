@@ -30,10 +30,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public class HistoryActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, AdapterView.OnItemSelectedListener{
     private boolean sortDesc = true;
+    private int posisiSpinner = 0;
     RecycleViewHistoryAdapter historyAdapter;
+    TanahService tanahService;
     ImageView btn_back, btn_sort;
     TextView toolbarName;
     SearchView searchView;
@@ -45,13 +48,20 @@ public class HistoryActivity extends AppCompatActivity implements SearchView.OnQ
                             "Kelembaban Udara",
                             "Waktu Sensing"};
 
+    String[] spinnerMenuId = {"ph_tanah",
+            "suhu_tanah",
+            "kelembaban_tanah",
+            "suhu_udara",
+            "kelembaban_udara",
+            "waktu_sensing"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.43.153:8000/")
+                .baseUrl("http://192.168.1.48:8000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -59,6 +69,7 @@ public class HistoryActivity extends AppCompatActivity implements SearchView.OnQ
         this.btn_sort = findViewById(R.id.btn_sort);
         this.toolbarName = findViewById(R.id.tv_toolbar_name);
         this.toolbarName.setText("Sensing History");
+        tanahService = retrofit.create(TanahService.class);
 
         this.btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,11 +83,17 @@ public class HistoryActivity extends AppCompatActivity implements SearchView.OnQ
             public void onClick(View view) {
                 if (sortDesc) {
                     sortDesc= false;
+                    String stringSortDesc = Boolean.toString(sortDesc);
                     btn_sort.setImageResource(R.drawable.ic_baseline_arrow_upward_24);
+                    historyAdapter.clearRecycleView();
+                    callTanahService(spinnerMenuId[posisiSpinner], stringSortDesc);
                 }
                 else {
                     sortDesc = true;
+                    String stringSortDesc = Boolean.toString(sortDesc);
                     btn_sort.setImageResource(R.drawable.ic_baseline_arrow_downward_24);
+                    historyAdapter.clearRecycleView();
+                    callTanahService(spinnerMenuId[posisiSpinner], stringSortDesc);
                 }
             }
         });
@@ -85,36 +102,32 @@ public class HistoryActivity extends AppCompatActivity implements SearchView.OnQ
         searchView.setOnQueryTextListener(this);
 
         Spinner spinner = findViewById(R.id.history_spinner);
-        spinner.setOnItemSelectedListener(this);
+        spinner.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(
+                            AdapterView<?> parent, View view, int position, long id) {
+                                posisiSpinner = position;
+                                if (historyAdapter!=null) historyAdapter.clearRecycleView();
+                                String isiSpinner = spinnerMenuId[posisiSpinner];
+                                String sortBy = Boolean.toString(sortDesc);
+                                callTanahService(isiSpinner, sortBy);
+                    }
+
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,spinnerMenu);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
 
-        TanahService tanahService = retrofit.create(TanahService.class);
+        String isiSV = searchView.getQuery().toString();
+        String isiSpinner = spinnerMenuId[posisiSpinner];
+        String isiSort = Boolean.toString(this.sortDesc);
 
-        final ProgressDialog progressDialog = new ProgressDialog(HistoryActivity.this);
-        progressDialog.setCancelable(false); // set cancelable to false
-        progressDialog.setMessage("Please Wait"); // set message
-        progressDialog.show(); // show progress dialog
-
-        tanahService.getNodeSensor(searchView.getQuery().toString(), spinner.getSelectedItem().toString().toLowerCase(Locale.ROOT), Boolean.toString(this.sortDesc)).enqueue(new Callback<ArrayList<Tanah>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Tanah>> call, Response<ArrayList<Tanah>> response) {
-                progressDialog.dismiss(); //dismiss progress dialog
-                tanahArrayListData = response.body();
-                for (int i = 0; i < tanahArrayListData.size(); i++) {
-                    tanahArrayListData.get(i).setNama_node("Node " + tanahArrayListData.get(i).getKode_petak());
-                }
-                setDataInRecycleView();
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Tanah>> call, Throwable t) {
-                Toast.makeText(HistoryActivity.this, "Load data failed", Toast.LENGTH_LONG).show();
-                progressDialog.dismiss(); //dismiss progress dialog
-            }
-        });
+        //TODO
+        callTanahService(isiSpinner, isiSort);
 
     }
 
@@ -161,5 +174,29 @@ public class HistoryActivity extends AppCompatActivity implements SearchView.OnQ
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    public void callTanahService(String isiSpinner, String sortBy) {
+        final ProgressDialog progressDialog = new ProgressDialog(HistoryActivity.this);
+        progressDialog.setCancelable(false); // set cancelable to false
+        progressDialog.setMessage("Please Wait"); // set message
+        progressDialog.show(); // show progress dialog
+        tanahService.getNodeSensor(isiSpinner, sortBy).enqueue(new Callback<ArrayList<Tanah>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Tanah>> call, Response<ArrayList<Tanah>> response) {
+                progressDialog.dismiss(); //dismiss progress dialog
+                tanahArrayListData = response.body();
+                for (int i = 0; i < tanahArrayListData.size(); i++) {
+                    tanahArrayListData.get(i).setNama_node("Node " + tanahArrayListData.get(i).getKode_petak());
+                }
+                setDataInRecycleView();
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Tanah>> call, Throwable t) {
+                Toast.makeText(HistoryActivity.this, "Load data failed", Toast.LENGTH_LONG).show();
+                progressDialog.dismiss(); //dismiss progress dialog
+            }
+        });
     }
 }

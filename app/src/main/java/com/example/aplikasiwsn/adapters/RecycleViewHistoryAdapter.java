@@ -46,6 +46,7 @@ public class RecycleViewHistoryAdapter extends RecyclerView.Adapter<RecycleViewH
         String kelembabanTanah = nodes.get(position).getKelembaban_tanah();
         String suhuTanah = nodes.get(position).getSuhu_tanah();
         String suhuUdara = nodes.get(position).getSuhu_udara();
+        String kelembabanUdara = nodes.get(position).getKelembaban_udara();
         String waktu = nodes.get(position).getWaktu_sensing();
 
         nodes.get(position).setNama_node(namaNode);
@@ -55,6 +56,7 @@ public class RecycleViewHistoryAdapter extends RecyclerView.Adapter<RecycleViewH
         holder.tv_rvhistory_kelembaban_text.setText(kelembabanTanah);
         holder.tv_rvhistory_tanah_text.setText(suhuTanah);
         holder.tv_rvhistory_udara_text.setText(suhuUdara);
+        holder.tv_rvhistory_kelembaban_udara_text.setText(kelembabanUdara);
         holder.tv_rvhistory_waktu_text.setText(waktu);
     }
 
@@ -72,6 +74,7 @@ public class RecycleViewHistoryAdapter extends RecyclerView.Adapter<RecycleViewH
         TextView tv_rvhistory_kelembaban_text;
         TextView tv_rvhistory_tanah_text;
         TextView tv_rvhistory_udara_text;
+        TextView tv_rvhistory_kelembaban_udara_text;
         TextView tv_rvhistory_waktu_text;
         ConstraintLayout clHistory;
 
@@ -82,6 +85,7 @@ public class RecycleViewHistoryAdapter extends RecyclerView.Adapter<RecycleViewH
             tv_rvhistory_kelembaban_text = itemView.findViewById(R.id.tv_rvhistory_kelembaban_text);
             tv_rvhistory_tanah_text = itemView.findViewById(R.id.tv_rvhistory_tanah_text);
             tv_rvhistory_udara_text = itemView.findViewById(R.id.tv_rvhistory_udara_text);
+            tv_rvhistory_kelembaban_udara_text = itemView.findViewById(R.id.tv_rvhistory_kelembaban_udara_text);
             tv_rvhistory_waktu_text = itemView.findViewById(R.id.tv_rvhistory_waktu_text);
             clHistory = itemView.findViewById(R.id.cl_history);
             itemView.setOnClickListener(this);
@@ -108,4 +112,8 @@ public class RecycleViewHistoryAdapter extends RecyclerView.Adapter<RecycleViewH
         notifyDataSetChanged();
     }
 
+    public void clearRecycleView() {
+        nodes.clear();
+        notifyDataSetChanged();
+    }
 }

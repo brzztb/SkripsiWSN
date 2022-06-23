@@ -42,7 +42,7 @@ public class StatusActivity extends AppCompatActivity {
         setContentView(R.layout.activity_status);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.43.153:8000/")
+                .baseUrl("http://192.168.1.48:8000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

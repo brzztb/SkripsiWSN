@@ -115,7 +115,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_rvhistory_tanah_text"
         android:text="22C" />
     <TextView
-        android:id="@+id/tv_rvhistory_waktu"
+        android:id="@+id/tv_rvhistory_kelembaban_udara"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
@@ -123,6 +123,26 @@
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_rvhistory_udara"
+        android:text="Kelembaban udara: " />
+    <TextView
+        android:id="@+id/tv_rvhistory_kelembaban_udara_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvhistory_udara_text"
+        android:text="22C" />
+    <TextView
+        android:id="@+id/tv_rvhistory_waktu"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvhistory_kelembaban_udara"
         android:text="Waktu sensing: " />
     <TextView
         android:id="@+id/tv_rvhistory_waktu_text"
@@ -132,7 +152,7 @@
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_rvhistory_udara_text"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvhistory_kelembaban_udara_text"
         android:text="2022-01-01 12:00:00" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

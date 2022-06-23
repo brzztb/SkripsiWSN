@@ -108,6 +108,26 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_rvsensing_tanah_text"
         android:text="25C" />
     <TextView
+        android:id="@+id/tv_rvsensing_kelembaban_udara"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/img_sensing"
+        app:layout_constraintTop_toBottomOf="@id/tv_rvsensing_udara"
+        android:text="Kelembaban udara: " />
+    <TextView
+        android:id="@+id/tv_rvsensing_kelembaban_udara_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/tv_rvsensing_kelembaban_udara"
+        app:layout_constraintTop_toBottomOf="@+id/tv_rvsensing_udara_text"
+        android:text="63" />
+    <TextView
         android:id="@+id/tv_rvsensing_waktu"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
