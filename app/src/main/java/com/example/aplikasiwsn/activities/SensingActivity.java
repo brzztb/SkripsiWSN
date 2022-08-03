@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.adapters.RecycleViewSensingAdapter;
+import com.example.aplikasiwsn.connections.configs.AppAPI;
 import com.example.aplikasiwsn.models.NodeSensor;
 import com.example.aplikasiwsn.models.Tanah;
 import com.example.aplikasiwsn.services.SensingService;
@@ -37,10 +38,7 @@ public class SensingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensing);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.48:8000/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        AppAPI.getRetrofit();
 
         this.btn_back = findViewById(R.id.btn_back);
         this.toolbarName = findViewById(R.id.tv_toolbar_name);
@@ -53,7 +51,7 @@ public class SensingActivity extends AppCompatActivity {
             }
         });
 
-        SensingService sensingService = retrofit.create(SensingService.class);
+        SensingService sensingService = AppAPI.getRetrofit().create(SensingService.class);
 
         final ProgressDialog progressDialog = new ProgressDialog(SensingActivity.this);
         progressDialog.setCancelable(false); // set cancelable to false

@@ -3,4 +3,5 @@
     <string name="splash_text">Aplikasi Pemantauan Sawah</string>
     <string name="splash_text_bottom">David Widjaya \n 2016730008</string>
     <string name="menu_title">Cek Status</string>
+    <string name="img_desc">This is a desciption.</string>
 </resources>

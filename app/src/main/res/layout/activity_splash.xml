@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/bg2"
     >
 
     <TextView
@@ -13,6 +14,7 @@
         android:layout_centerVertical="true"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="@string/splash_text"
+        android:textColor="@color/black"
         android:textSize="50sp" />
 
     <TextView
@@ -23,6 +25,7 @@
         android:layout_marginTop="50dp"
         android:fontFamily="sans-serif-light"
         android:gravity="center"
+        android:textColor="@color/black"
         android:text="@string/splash_text_bottom"
         android:textSize="30sp" />
 

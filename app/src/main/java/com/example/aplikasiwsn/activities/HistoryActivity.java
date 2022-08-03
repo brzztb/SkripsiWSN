@@ -6,17 +6,18 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.adapters.RecycleViewHistoryAdapter;
+import com.example.aplikasiwsn.connections.configs.AppAPI;
 import com.example.aplikasiwsn.models.NodeSensor;
 import com.example.aplikasiwsn.models.Tanah;
 import com.example.aplikasiwsn.services.TanahService;
@@ -60,16 +61,13 @@ public class HistoryActivity extends AppCompatActivity implements SearchView.OnQ
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.48:8000/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        AppAPI.getRetrofit();
 
         this.btn_back = findViewById(R.id.btn_back);
         this.btn_sort = findViewById(R.id.btn_sort);
         this.toolbarName = findViewById(R.id.tv_toolbar_name);
         this.toolbarName.setText("Sensing History");
-        tanahService = retrofit.create(TanahService.class);
+        tanahService = AppAPI.getRetrofit().create(TanahService.class);
 
         this.btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +116,7 @@ public class HistoryActivity extends AppCompatActivity implements SearchView.OnQ
                     }
                 });
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,spinnerMenu);
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this,R.layout.spinner_list,spinnerMenu);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
 

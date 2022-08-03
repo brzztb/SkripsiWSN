@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.adapters.RecycleViewMenuAdapter;
 import com.example.aplikasiwsn.adapters.RecycleViewStatusAdapter;
+import com.example.aplikasiwsn.connections.configs.AppAPI;
 import com.example.aplikasiwsn.models.NodeSensor;
 import com.example.aplikasiwsn.models.NodeSensorStatus;
 import com.example.aplikasiwsn.services.NodeService;
@@ -41,10 +42,7 @@ public class StatusActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.48:8000/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        AppAPI.getRetrofit();
 
         this.btn_back = findViewById(R.id.btn_back);
         this.toolbarName = findViewById(R.id.tv_toolbar_name);
@@ -57,7 +55,7 @@ public class StatusActivity extends AppCompatActivity {
             }
         });
 
-        NodeService nodeService = retrofit.create(NodeService.class);
+        NodeService nodeService = AppAPI.getRetrofit().create(NodeService.class);
 
         final ProgressDialog progressDialog = new ProgressDialog(StatusActivity.this);
         progressDialog.setCancelable(false); // set cancelable to false

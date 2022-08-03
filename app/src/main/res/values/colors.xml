@@ -21,4 +21,7 @@
     <color name="blue">#0000FF</color>
     <color name="navy">#000080</color>
     <color name="black">#000000</color>
+    <color name="light_green">#31a05f</color>
+    <color name="light_orange">#ef9920</color>
+    <color name="crop_area_1">#5994B49F</color>
 </resources>

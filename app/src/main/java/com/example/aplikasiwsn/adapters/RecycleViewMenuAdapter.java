@@ -14,8 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.activities.HistoryActivity;
+import com.example.aplikasiwsn.activities.LoginActivity;
+import com.example.aplikasiwsn.activities.MyCropActivity;
 import com.example.aplikasiwsn.activities.SensingActivity;
 import com.example.aplikasiwsn.activities.StatusActivity;
+import com.example.aplikasiwsn.applications.CredentialSharedPreferences;
 
 public class RecycleViewMenuAdapter extends RecyclerView.Adapter<RecycleViewMenuAdapter.ViewHolder> {
     private String[] mData;
@@ -55,6 +58,14 @@ public class RecycleViewMenuAdapter extends RecyclerView.Adapter<RecycleViewMenu
                     break;
                 case 2:
                     intent = new Intent(context, HistoryActivity.class);
+                    context.startActivity(intent);
+                case 3:
+                    intent = new Intent(context, MyCropActivity.class);
+                    context.startActivity(intent);
+                case 4:
+                    CredentialSharedPreferences cred = new CredentialSharedPreferences(context);
+                    cred.clearCredential();
+                    intent = new Intent(context, LoginActivity.class);
                     context.startActivity(intent);
             }
         });
