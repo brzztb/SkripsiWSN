@@ -27,6 +27,8 @@ public class MyCropActivity extends FragmentActivity implements OnMapReadyCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        System.out.println("Maduk");
+
         binding = ActivityMyCropBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

@@ -67,6 +67,8 @@ public class RecycleViewMenuAdapter extends RecyclerView.Adapter<RecycleViewMenu
                     cred.clearCredential();
                     intent = new Intent(context, LoginActivity.class);
                     context.startActivity(intent);
+                    Activity activity = (Activity)context;
+                    activity.finish();
             }
         });
     }
