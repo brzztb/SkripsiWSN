@@ -59,9 +59,11 @@ public class RecycleViewMenuAdapter extends RecyclerView.Adapter<RecycleViewMenu
                 case 2:
                     intent = new Intent(context, HistoryActivity.class);
                     context.startActivity(intent);
+                    break;
                 case 3:
                     intent = new Intent(context, MyCropActivity.class);
                     context.startActivity(intent);
+                    break;
                 case 4:
                     CredentialSharedPreferences cred = new CredentialSharedPreferences(context);
                     cred.clearCredential();
