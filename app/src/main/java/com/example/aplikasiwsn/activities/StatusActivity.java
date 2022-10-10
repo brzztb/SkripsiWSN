@@ -1,46 +1,51 @@
 package com.example.aplikasiwsn.activities;
 
 import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aplikasiwsn.R;
-import com.example.aplikasiwsn.adapters.RecycleViewMenuAdapter;
 import com.example.aplikasiwsn.adapters.RecycleViewStatusAdapter;
 import com.example.aplikasiwsn.connections.configs.AppAPI;
-import com.example.aplikasiwsn.models.NodeSensor;
 import com.example.aplikasiwsn.models.NodeSensorStatus;
 import com.example.aplikasiwsn.services.NodeService;
 
+import org.w3c.dom.Node;
+
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class StatusActivity extends AppCompatActivity {
 
     RecycleViewStatusAdapter statusAdapter;
     ImageView btn_back;
     TextView toolbarName;
-    private ArrayList<NodeSensorStatus> nodeArrayListStatusData;
+    private ArrayList<NodeSensorStatus> nodeArrayListStatusData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status);
+
+        RecyclerView recyclerView = findViewById(R.id.rvStatus);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        statusAdapter = new RecycleViewStatusAdapter(this, nodeArrayListStatusData);
+        recyclerView.setAdapter(statusAdapter);
 
         AppAPI.getRetrofit();
 
@@ -66,8 +71,7 @@ public class StatusActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ArrayList<NodeSensorStatus>> call, Response<ArrayList<NodeSensorStatus>> response) {
                 progressDialog.dismiss(); //dismiss progress dialog
-                nodeArrayListStatusData = response.body();
-                setDataInRecycleView();
+                statusAdapter.changeData(response.body());
             }
 
             @Override
@@ -76,13 +80,49 @@ public class StatusActivity extends AppCompatActivity {
                 progressDialog.dismiss(); //dismiss progress dialog
             }
         });
+        setRepeatingAsyncTask();
     }
 
-    private void setDataInRecycleView() {
-        // set up the RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.rvStatus);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        statusAdapter = new RecycleViewStatusAdapter(this, nodeArrayListStatusData);
-        recyclerView.setAdapter(statusAdapter);
+    private void setRepeatingAsyncTask() {
+        final Handler handler = new Handler();
+        Timer timer = new Timer();
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        try {
+                            StatusAsyncTask statusAsyncTask = new StatusAsyncTask();
+                            statusAsyncTask.execute();
+                        } catch (Exception e) {
+                            // error, do something
+                        }
+                    }
+                });
+            }
+        };
+
+        timer.schedule(task, 0, 5*1000);  // interval of one minute
+
+    }
+
+    private class StatusAsyncTask extends AsyncTask<String, Void, ArrayList<NodeSensorStatus>> {
+        @Override
+        protected ArrayList<NodeSensorStatus> doInBackground(String... strings) {
+            NodeService nodeService = AppAPI.getRetrofit().create(NodeService.class);
+            try {
+                return nodeService.getNodeSensor().execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return new ArrayList<NodeSensorStatus>();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<NodeSensorStatus> result) {
+            statusAdapter.changeData(result);
+        }
+
     }
 }

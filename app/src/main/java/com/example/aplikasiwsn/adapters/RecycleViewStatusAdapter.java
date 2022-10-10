@@ -107,4 +107,9 @@ public class RecycleViewStatusAdapter extends RecyclerView.Adapter<RecycleViewSt
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+
+    public void changeData(ArrayList<NodeSensorStatus> nodeSensorStatuses) {
+        this.nodeArrayListStatusData = nodeSensorStatuses;
+        notifyDataSetChanged();
+    }
 }
