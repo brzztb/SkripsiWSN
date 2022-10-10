@@ -11,6 +11,6 @@ import retrofit2.Callback;
 import retrofit2.http.GET;
 
 public interface NodeService {
-    @GET("sql")
+    @GET("status")
     Call<ArrayList<NodeSensorStatus>> getNodeSensor();
 }
