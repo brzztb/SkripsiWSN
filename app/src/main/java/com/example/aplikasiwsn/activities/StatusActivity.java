@@ -36,6 +36,8 @@ public class StatusActivity extends AppCompatActivity {
     ImageView btn_back;
     TextView toolbarName;
     private ArrayList<NodeSensorStatus> nodeArrayListStatusData = new ArrayList<>();
+    Timer timer;
+    TimerTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,34 +62,34 @@ public class StatusActivity extends AppCompatActivity {
             }
         });
 
-        NodeService nodeService = AppAPI.getRetrofit().create(NodeService.class);
-
-        final ProgressDialog progressDialog = new ProgressDialog(StatusActivity.this);
-        progressDialog.setCancelable(false); // set cancelable to false
-        progressDialog.setMessage("Please Wait"); // set message
-        progressDialog.show(); // show progress dialog
-
-        nodeService.getNodeSensor().enqueue(new Callback<ArrayList<NodeSensorStatus>>() {
-            @Override
-            public void onResponse(Call<ArrayList<NodeSensorStatus>> call, Response<ArrayList<NodeSensorStatus>> response) {
-                progressDialog.dismiss(); //dismiss progress dialog
-                statusAdapter.changeData(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<NodeSensorStatus>> call, Throwable t) {
-                Toast.makeText(StatusActivity.this, "Load data failed", Toast.LENGTH_LONG).show();
-                progressDialog.dismiss(); //dismiss progress dialog
-            }
-        });
+//        NodeService nodeService = AppAPI.getRetrofit().create(NodeService.class);
+//
+//        final ProgressDialog progressDialog = new ProgressDialog(StatusActivity.this);
+//        progressDialog.setCancelable(false); // set cancelable to false
+//        progressDialog.setMessage("Please Wait"); // set message
+//        progressDialog.show(); // show progress dialog
+//
+//        nodeService.getNodeSensor().enqueue(new Callback<ArrayList<NodeSensorStatus>>() {
+//            @Override
+//            public void onResponse(Call<ArrayList<NodeSensorStatus>> call, Response<ArrayList<NodeSensorStatus>> response) {
+//                progressDialog.dismiss(); //dismiss progress dialog
+//                statusAdapter.changeData(response.body());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ArrayList<NodeSensorStatus>> call, Throwable t) {
+//                Toast.makeText(StatusActivity.this, "Load data failed", Toast.LENGTH_LONG).show();
+//                progressDialog.dismiss(); //dismiss progress dialog
+//            }
+//        });
         setRepeatingAsyncTask();
     }
 
     private void setRepeatingAsyncTask() {
         final Handler handler = new Handler();
-        Timer timer = new Timer();
+        timer =  new Timer();
 
-        TimerTask task = new TimerTask() {
+        task = new TimerTask() {
             @Override
             public void run() {
                 handler.post(new Runnable() {
@@ -103,8 +105,12 @@ public class StatusActivity extends AppCompatActivity {
             }
         };
 
-        timer.schedule(task, 0, 5*1000);  // interval of one minute
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        timer.schedule(task, 0, 1*1000);  // interval of one minute
     }
 
     private class StatusAsyncTask extends AsyncTask<String, Void, ArrayList<NodeSensorStatus>> {
@@ -123,6 +129,11 @@ public class StatusActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<NodeSensorStatus> result) {
             statusAdapter.changeData(result);
         }
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timer.cancel();
     }
 }

@@ -118,4 +118,9 @@ public class RecycleViewSensingAdapter extends RecyclerView.Adapter<RecycleViewS
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+
+    public void changeData(ArrayList<Tanah> tanah) {
+        this.nodes = tanah;
+        notifyDataSetChanged();
+    }
 }

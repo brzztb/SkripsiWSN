@@ -1,7 +1,9 @@
 package com.example.aplikasiwsn.activities;
 
 import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,11 +16,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.adapters.RecycleViewSensingAdapter;
 import com.example.aplikasiwsn.connections.configs.AppAPI;
-import com.example.aplikasiwsn.models.NodeSensor;
 import com.example.aplikasiwsn.models.Tanah;
+import com.example.aplikasiwsn.services.NodeService;
 import com.example.aplikasiwsn.services.SensingService;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,12 +36,19 @@ public class SensingActivity extends AppCompatActivity {
     RecycleViewSensingAdapter sensingAdapter;
     ImageView btn_back;
     TextView toolbarName;
-    private ArrayList<Tanah> sensingArrayListData;
+    private ArrayList<Tanah> sensingArrayListData  = new ArrayList<>();
+    Timer timer;
+    TimerTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensing);
+
+        RecyclerView recyclerView = findViewById(R.id.rvSensing);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        sensingAdapter = new RecycleViewSensingAdapter(this, sensingArrayListData);
+        recyclerView.setAdapter(sensingAdapter);
 
         AppAPI.getRetrofit();
 
@@ -51,33 +63,77 @@ public class SensingActivity extends AppCompatActivity {
             }
         });
 
-        SensingService sensingService = AppAPI.getRetrofit().create(SensingService.class);
-
-        final ProgressDialog progressDialog = new ProgressDialog(SensingActivity.this);
-        progressDialog.setCancelable(false); // set cancelable to false
-        progressDialog.setMessage("Please Wait"); // set message
-        progressDialog.show(); // show progress dialog
-
-        sensingService.getSensing().enqueue(new Callback<ArrayList<Tanah>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Tanah>> call, Response<ArrayList<Tanah>> response) {
-                progressDialog.dismiss();
-                sensingArrayListData = response.body();
-                setDataInRecycleView();
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Tanah>> call, Throwable t) {
-                Toast.makeText(SensingActivity.this, "Load data failed", Toast.LENGTH_LONG).show();
-                progressDialog.dismiss(); //dismiss progress dialog
-            }
-        });
+//        SensingService sensingService = AppAPI.getRetrofit().create(SensingService.class);
+//
+//        final ProgressDialog progressDialog = new ProgressDialog(SensingActivity.this);
+//        progressDialog.setCancelable(false); // set cancelable to false
+//        progressDialog.setMessage("Please Wait"); // set message
+//        progressDialog.show(); // show progress dialog
+//
+//        sensingService.getSensing().enqueue(new Callback<ArrayList<Tanah>>() {
+//            @Override
+//            public void onResponse(Call<ArrayList<Tanah>> call, Response<ArrayList<Tanah>> response) {
+//                progressDialog.dismiss();
+//                sensingAdapter.changeData(response.body());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ArrayList<Tanah>> call, Throwable t) {
+//                Toast.makeText(SensingActivity.this, "Load data failed", Toast.LENGTH_LONG).show();
+//                progressDialog.dismiss(); //dismiss progress dialog
+//            }
+//        });
+        setRepeatingAsyncTask();
     }
 
-    private void setDataInRecycleView() {// set up the RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.rvSensing);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        sensingAdapter = new RecycleViewSensingAdapter(this, sensingArrayListData);
-        recyclerView.setAdapter(sensingAdapter);
+    private void setRepeatingAsyncTask() {
+        final Handler handler = new Handler();
+        timer = new Timer();
+
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        try {
+                            SensingAsyncTask sensingAsyncTask = new SensingAsyncTask();
+                            sensingAsyncTask.execute();
+                        } catch (Exception e) {
+                            // error, do something
+                        }
+                    }
+                });
+            }
+        };
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        timer.schedule(task, 0, 1*1000);  // interval of one minute
+    }
+
+    private class SensingAsyncTask extends AsyncTask<String, Void, ArrayList<Tanah>> {
+        @Override
+        protected ArrayList<Tanah> doInBackground(String... strings) {
+            SensingService sensingService = AppAPI.getRetrofit().create(SensingService.class);
+            try {
+                return sensingService.getSensing().execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return new ArrayList<Tanah>();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Tanah> result) {
+            sensingAdapter.changeData(result);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timer.cancel();
     }
 }
