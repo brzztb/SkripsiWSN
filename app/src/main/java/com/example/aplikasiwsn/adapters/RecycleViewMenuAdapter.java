@@ -16,6 +16,7 @@ import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.activities.HistoryActivity;
 import com.example.aplikasiwsn.activities.LoginActivity;
 import com.example.aplikasiwsn.activities.MyCropActivity;
+import com.example.aplikasiwsn.activities.PhLineChartActivity;
 import com.example.aplikasiwsn.activities.SensingActivity;
 import com.example.aplikasiwsn.activities.StatusActivity;
 import com.example.aplikasiwsn.applications.CredentialSharedPreferences;
@@ -65,6 +66,10 @@ public class RecycleViewMenuAdapter extends RecyclerView.Adapter<RecycleViewMenu
                     context.startActivity(intent);
                     break;
                 case 4:
+                    intent = new Intent(context, PhLineChartActivity.class);
+                    context.startActivity(intent);
+                    break;
+                case 5:
                     CredentialSharedPreferences cred = new CredentialSharedPreferences(context);
                     cred.clearCredential();
                     intent = new Intent(context, LoginActivity.class);

@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/tes_icon" />
+        android:src="@drawable/raspberry45" />
     <TextView
         android:id="@+id/tv_rvstatus_name"
         android:layout_width="wrap_content"
@@ -25,7 +25,9 @@
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/img_status"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="20dp"
         android:gravity="center"
+        android:background="@color/white"
         android:text="Raspberry " />
     <TextView
         android:id="@+id/tv_rvstatus_status"
@@ -36,6 +38,9 @@
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/img_status"
         app:layout_constraintTop_toBottomOf="@id/tv_rvstatus_name"
+        android:background="@color/white"
+        android:layout_marginLeft="20dp"
+
         android:text="Status: " />
     <TextView
         android:id="@+id/tv_rvstatus_status_text"
@@ -44,6 +49,7 @@
         android:textColor="@color/light_orange"
         android:textSize="15sp"
         android:textStyle="bold"
+        android:background="@color/white"
         app:layout_constraintLeft_toRightOf="@+id/tv_rvstatus_status"
         app:layout_constraintTop_toBottomOf="@id/tv_rvstatus_name"
         android:text="Online" />
@@ -56,6 +62,8 @@
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/img_status"
         app:layout_constraintTop_toBottomOf="@id/tv_rvstatus_status"
+        android:background="@color/white"
+        android:layout_marginLeft="20dp"
         android:text="Status Sensing: " />
     <TextView
         android:id="@+id/tv_rvstatus_statussensing_text"
@@ -64,6 +72,7 @@
         android:textColor="@color/light_orange"
         android:textSize="15sp"
         android:textStyle="bold"
+        android:background="@color/white"
         app:layout_constraintLeft_toRightOf="@+id/tv_rvstatus_statussensing"
         app:layout_constraintTop_toBottomOf="@id/tv_rvstatus_status"
         android:text="Not sensing" />

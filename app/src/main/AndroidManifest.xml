@@ -44,6 +44,9 @@
         <activity
             android:name=".activities.LoginActivity"
             android:exported="false" />
+        <activity
+            android:name=".activities.PhLineChartActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

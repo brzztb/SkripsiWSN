@@ -46,6 +46,7 @@ public class RecycleViewStatusAdapter extends RecyclerView.Adapter<RecycleViewSt
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String statusNode = nodeArrayListStatusData.get(position).getStatus_node();
         String statusSensingNode = nodeArrayListStatusData.get(position).getStatus_sensing();
+        String statusName = nodeArrayListStatusData.get(position).getNama_node();
 
         if (statusNode.equalsIgnoreCase("Online")) {
             holder.tv_rvstatus_status_text.setTextColor(context.getResources().getColor(R.color.lime));
@@ -61,7 +62,12 @@ public class RecycleViewStatusAdapter extends RecyclerView.Adapter<RecycleViewSt
         }
         holder.tv_rvstatus_statussensing_text.setText(nodeArrayListStatusData.get(position).getStatus_sensing());
 
-        holder.img_status.setImageResource(R.drawable.tes_icon);
+        if (statusName.equalsIgnoreCase("Raspberry Pi 3 B+")) {
+            holder.img_status.setImageResource(R.drawable.raspberry45);
+        }
+        else {
+            holder.img_status.setImageResource(R.drawable.arduino2550);
+        }
         holder.tv_rvstatus_name.setText(nodeArrayListStatusData.get(position).getNama_node());
         holder.tv_rvstatus_status_text.setText(nodeArrayListStatusData.get(position).getStatus_node());
         holder.tv_rvstatus_statussensing_text.setText(nodeArrayListStatusData.get(position).getStatus_sensing());

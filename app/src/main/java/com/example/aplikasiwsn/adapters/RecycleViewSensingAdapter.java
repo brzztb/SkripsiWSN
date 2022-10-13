@@ -44,13 +44,13 @@ public class RecycleViewSensingAdapter extends RecyclerView.Adapter<RecycleViewS
     @Override
     public void onBindViewHolder(@NonNull RecycleViewSensingAdapter.ViewHolder holder, int position) {
         if (nodes.get(position).getKode_petak().equalsIgnoreCase("1")) {
-            holder.img_sensing.setImageResource(R.drawable.back_icon);
+            holder.img_sensing.setImageResource(R.drawable.arduino2550);
         }
         else if (nodes.get(position).getKode_petak().equalsIgnoreCase("2")){
-            holder.img_sensing.setImageResource(R.drawable.tes_icon);
+            holder.img_sensing.setImageResource(R.drawable.arduino2550);
         }
         else if (nodes.get(position).getKode_petak().equalsIgnoreCase("3")){
-            holder.img_sensing.setImageResource(R.drawable.back_icon);
+            holder.img_sensing.setImageResource(R.drawable.arduino2550);
         }
 
         String namaNode = "Node " + nodes.get(position).getKode_petak();

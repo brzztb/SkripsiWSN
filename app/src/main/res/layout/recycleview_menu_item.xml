@@ -6,6 +6,7 @@
     android:padding="5dp"
     android:layout_margin="20dp"
     android:layout_width="150dp"
+    android:background="@drawable/bold_rounded_corner"
     android:layout_height="wrap_content">
 
     <ImageView
@@ -20,6 +21,8 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/img_menu"
+        android:textSize="22dp"
+        android:textStyle="bold"
         android:gravity="center"
         android:text="My Nodes" />
 
