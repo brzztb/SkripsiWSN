@@ -25,7 +25,6 @@ import retrofit2.Response;
 
 public class PhLineChartActivity extends AppCompatActivity {
     private LineChart mChart;
-    ArrayList<SenseKeasaman> senseKeasaman = new ArrayList<>();
     ArrayList<Entry> node1 = new ArrayList<>();
     ArrayList<Entry> node2 = new ArrayList<>();
     ArrayList<Entry> node3 = new ArrayList<>();
@@ -34,60 +33,26 @@ public class PhLineChartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ph_chart);
+        final ProgressDialog progressDialog = new ProgressDialog(PhLineChartActivity.this);
 
         mChart = (LineChart) findViewById(R.id.linechart);
         Description desc = new Description();
         desc.setText("Keasaman Tanah (pH)");
         mChart.setDescription(desc);
-        mChart.setNoDataText("Click to view chart");
+        mChart.setNoDataText("Please wait...");
         mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         mChart.getXAxis().setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(PhLineChartActivity.this);
         progressDialog.setCancelable(false); // set cancelable to false
         progressDialog.setMessage("Please Wait"); // set message
         progressDialog.show(); // show progress dialog
 
-//        AppAPI.getRetrofit();
         KeasamanService keasamanService = AppAPI.getRetrofit().create(KeasamanService.class);
         keasamanService.getKeasaman().enqueue(new Callback<ArrayList<SenseKeasaman>>() {
             @Override
             public void onResponse(Call<ArrayList<SenseKeasaman>> call, Response<ArrayList<SenseKeasaman>> response) {
                 ArrayList<SenseKeasaman> datas = response.body();
-                senseKeasaman = datas;
-                for (int i = 0; i < datas.size(); i++) {
-//            String dateString = array.get(i).getWaktu_sensing();
-
-                    //DAPETIN MILISEKON DARI WAKTU SENSING
-//            long dateMilis = LocalDateTime.parse(dateString.replace(" ", "T")).atZone(ZoneId.of("Asia/Jakarta")).toInstant().toEpochMilli();
-
-                    if (datas.get(i).getKode_petak().equals("1")) {
-                        node1.add(new Entry(i, Float.parseFloat(datas.get(i).getPh_tanah())));
-                    } else if (datas.get(i).getKode_petak().equals("2")) {
-                        node2.add(new Entry(i, Float.parseFloat(datas.get(i).getPh_tanah())));
-                    } else if (datas.get(i).getKode_petak().equals("3")) {
-                        node3.add(new Entry(i, Float.parseFloat(datas.get(i).getPh_tanah())));
-                    }
-                }
-
-                LineDataSet set1 = new LineDataSet(node1, "Node 1");
-                set1.setColor(Color.RED);
-                set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-                set1.setDrawCircles(false);
-                set1.setDrawCircleHole(false);
-                LineDataSet set2 = new LineDataSet(node2, "Node 2");
-                set2.setColor(Color.GREEN);
-                set2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-                set2.setDrawCircles(false);
-                set2.setDrawCircleHole(false);
-                LineDataSet set3 = new LineDataSet(node3, "Node 3");
-                set3.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-                set3.setDrawCircles(false);
-                set3.setDrawCircleHole(false);
-
-                LineData data = new LineData(set1, set2, set3);
-
-                mChart.setData(data);
+                makeLineChart(datas.size(), datas);
                 progressDialog.dismiss();
             }
 
@@ -96,42 +61,41 @@ public class PhLineChartActivity extends AppCompatActivity {
                 System.out.println("Error loading data.");
             }
         });
-
     }
 
     private void makeLineChart(int size, ArrayList<SenseKeasaman> array) {
-//        for (int i = 0; i < size; i++) {
-////            String dateString = array.get(i).getWaktu_sensing();
-//
-//            //DAPETIN MILISEKON DARI WAKTU SENSING
-////            long dateMilis = LocalDateTime.parse(dateString.replace(" ", "T")).atZone(ZoneId.of("Asia/Jakarta")).toInstant().toEpochMilli();
-//
-//            if (array.get(i).getKode_petak().equals("1")) {
-//                node1.add(new Entry(i, Float.parseFloat(array.get(i).getPh_tanah())));
-//            } else if (array.get(i).getKode_petak().equals("2")) {
-//                node2.add(new Entry(i, Float.parseFloat(array.get(i).getPh_tanah())));
-//            } else if (array.get(i).getKode_petak().equals("3")) {
-//                node3.add(new Entry(i, Float.parseFloat(array.get(i).getPh_tanah())));
-//            }
-//        }
-//
-//        LineDataSet set1 = new LineDataSet(node1, "Node 1");
-//        set1.setColor(Color.RED);
-//        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-//        set1.setDrawCircles(false);
-//        set1.setDrawCircleHole(false);
-//        LineDataSet set2 = new LineDataSet(node2, "Node 2");
-//        set2.setColor(Color.GREEN);
-//        set2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-//        set2.setDrawCircles(false);
-//        set2.setDrawCircleHole(false);
-//        LineDataSet set3 = new LineDataSet(node3, "Node 3");
-//        set3.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-//        set3.setDrawCircles(false);
-//        set3.setDrawCircleHole(false);
-//
-//        LineData data = new LineData(set1, set2, set3);
-//
-//        mChart.setData(data);
+        for (int i = 0; i < size; i++) {
+//            String dateString = array.get(i).getWaktu_sensing();
+
+            //DAPETIN MILISEKON DARI WAKTU SENSING
+//            long dateMilis = LocalDateTime.parse(dateString.replace(" ", "T")).atZone(ZoneId.of("Asia/Jakarta")).toInstant().toEpochMilli();
+
+            if (array.get(i).getKode_petak().equals("1")) {
+                node1.add(new Entry(i, Float.parseFloat(array.get(i).getPh_tanah())));
+            } else if (array.get(i).getKode_petak().equals("2")) {
+                node2.add(new Entry(i, Float.parseFloat(array.get(i).getPh_tanah())));
+            } else if (array.get(i).getKode_petak().equals("3")) {
+                node3.add(new Entry(i, Float.parseFloat(array.get(i).getPh_tanah())));
+            }
+        }
+
+        LineDataSet set1 = new LineDataSet(node1, "Node 1");
+        set1.setColor(Color.RED);
+        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set1.setDrawCircles(false);
+        set1.setDrawCircleHole(false);
+        LineDataSet set2 = new LineDataSet(node2, "Node 2");
+        set2.setColor(Color.GREEN);
+        set2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set2.setDrawCircles(false);
+        set2.setDrawCircleHole(false);
+        LineDataSet set3 = new LineDataSet(node3, "Node 3");
+        set3.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set3.setDrawCircles(false);
+        set3.setDrawCircleHole(false);
+
+        LineData data = new LineData(set1, set2, set3);
+        mChart.invalidate();
+        mChart.setData(data);
     }
 }

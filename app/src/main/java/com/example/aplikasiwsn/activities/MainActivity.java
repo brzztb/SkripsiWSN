@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements RecycleViewMenuAd
         this.btn_back.setVisibility(View.GONE);
 
         // data to populate the RecyclerView with
-        String[] data = {"Cek Status", "Sensing", "History", "My Crop", "Ph History", "Logout"};
+        String[] data = {"Cek Status", "Sensing", "History", "My Crop", "My Chart", "Logout"};
 
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.rvMenu);
