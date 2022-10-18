@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -122,6 +123,8 @@ public class ChartSelectionActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ArrayList<SenseKeasaman>> call, Throwable t) {
+                        Toast.makeText(ChartSelectionActivity.this, "Load data failed, please try again", Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
                         System.out.println("Error loading data.");
                     }
                 });
@@ -305,6 +308,7 @@ public class ChartSelectionActivity extends AppCompatActivity {
         set3.setDrawCircleHole(false);
 
         LineData data = new LineData(set1, set2, set3);
+        mChart.animateXY(2000, 2000);
         mChart.setData(data);
     }
 }
