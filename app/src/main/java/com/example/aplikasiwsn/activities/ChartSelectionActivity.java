@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.connections.configs.AppAPI;
+import com.example.aplikasiwsn.models.LineChartXAxisValueFormatter;
 import com.example.aplikasiwsn.models.SenseKeasaman;
 import com.example.aplikasiwsn.models.SenseKelembabanTanah;
 import com.example.aplikasiwsn.models.SenseKelembabanUdara;
@@ -30,7 +31,13 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,7 +82,7 @@ public class ChartSelectionActivity extends AppCompatActivity {
         mChart = (LineChart) findViewById(R.id.linechart_selection);
         mChart.setNoDataText("Please wait...");
         mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        mChart.getXAxis().setEnabled(false);
+        mChart.getXAxis().setValueFormatter(new LineChartXAxisValueFormatter());
 
         Spinner spinner = findViewById(R.id.chart_selection_spinner);
         cmService = AppAPI.getRetrofit().create(ChartMakerService.class);
@@ -144,7 +151,9 @@ public class ChartSelectionActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ArrayList<SenseSuhuTanah>> call, Throwable t) {
-
+                        Toast.makeText(ChartSelectionActivity.this, "Load data failed, please try again", Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
+                        System.out.println("Error loading data.");
                     }
                 });
                 break;
@@ -163,7 +172,9 @@ public class ChartSelectionActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ArrayList<SenseKelembabanTanah>> call, Throwable t) {
-
+                        Toast.makeText(ChartSelectionActivity.this, "Load data failed, please try again", Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
+                        System.out.println("Error loading data.");
                     }
                 });
                 break;
@@ -182,7 +193,9 @@ public class ChartSelectionActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ArrayList<SenseSuhuUdara>> call, Throwable t) {
-
+                        Toast.makeText(ChartSelectionActivity.this, "Load data failed, please try again", Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
+                        System.out.println("Error loading data.");
                     }
                 });
                 break;
@@ -201,7 +214,9 @@ public class ChartSelectionActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ArrayList<SenseKelembabanUdara>> call, Throwable t) {
-
+                        Toast.makeText(ChartSelectionActivity.this, "Load data failed, please try again", Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
+                        System.out.println("Error loading data.");
                     }
                 });
                 break;
@@ -212,15 +227,30 @@ public class ChartSelectionActivity extends AppCompatActivity {
         ArrayList<Entry> node2 = new ArrayList<>();
         ArrayList<Entry> node3 = new ArrayList<>();
         for (int i = 0; i < size; i++) {
+
+            String dateString = array.get(i).getWaktu_sensing();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+
+            long secs = 0;
+            try {
+                Date date = sdf.parse(dateString);
+                secs = date.getTime()/1000;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             if (array.get(i).getKode_petak().equals("1")) {
-                node1.add(new Entry(i, Float.parseFloat(array.get(i).getPh_tanah())));
+                node1.add(new Entry(secs, Float.parseFloat(array.get(i).getPh_tanah())));
             } else if (array.get(i).getKode_petak().equals("2")) {
-                node2.add(new Entry(i, Float.parseFloat(array.get(i).getPh_tanah())));
+                node2.add(new Entry(secs, Float.parseFloat(array.get(i).getPh_tanah())));
             } else if (array.get(i).getKode_petak().equals("3")) {
-                node3.add(new Entry(i, Float.parseFloat(array.get(i).getPh_tanah())));
+                node3.add(new Entry(secs, Float.parseFloat(array.get(i).getPh_tanah())));
             }
         }
-
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM");
+//        long date2 = new Date().getTime();
+//        String a = sdf.format(date2);
         setChartData(node1, node2, node3);
     }
 
@@ -229,12 +259,24 @@ public class ChartSelectionActivity extends AppCompatActivity {
         ArrayList<Entry> node2 = new ArrayList<>();
         ArrayList<Entry> node3 = new ArrayList<>();
         for (int i = 0; i < size; i++) {
+            String dateString = array.get(i).getWaktu_sensing();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+
+            long secs = 0;
+            try {
+                Date date = sdf.parse(dateString);
+                secs = date.getTime()/1000;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             if (array.get(i).getKode_petak().equals("1")) {
-                node1.add(new Entry(i, Float.parseFloat(array.get(i).getSuhu_Tanah())));
+                node1.add(new Entry(secs, Float.parseFloat(array.get(i).getSuhu_Tanah())));
             } else if (array.get(i).getKode_petak().equals("2")) {
-                node2.add(new Entry(i, Float.parseFloat(array.get(i).getSuhu_Tanah())));
+                node2.add(new Entry(secs, Float.parseFloat(array.get(i).getSuhu_Tanah())));
             } else if (array.get(i).getKode_petak().equals("3")) {
-                node3.add(new Entry(i, Float.parseFloat(array.get(i).getSuhu_Tanah())));
+                node3.add(new Entry(secs, Float.parseFloat(array.get(i).getSuhu_Tanah())));
             }
         }
 
@@ -246,12 +288,24 @@ public class ChartSelectionActivity extends AppCompatActivity {
         ArrayList<Entry> node2 = new ArrayList<>();
         ArrayList<Entry> node3 = new ArrayList<>();
         for (int i = 0; i < size; i++) {
+            String dateString = array.get(i).getWaktu_sensing();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+
+            long secs = 0;
+            try {
+                Date date = sdf.parse(dateString);
+                secs = date.getTime()/1000;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             if (array.get(i).getKode_petak().equals("1")) {
-                node1.add(new Entry(i, Float.parseFloat(array.get(i).getKelembaban_tanah())));
+                node1.add(new Entry(secs, Float.parseFloat(array.get(i).getKelembaban_tanah())));
             } else if (array.get(i).getKode_petak().equals("2")) {
-                node2.add(new Entry(i, Float.parseFloat(array.get(i).getKelembaban_tanah())));
+                node2.add(new Entry(secs, Float.parseFloat(array.get(i).getKelembaban_tanah())));
             } else if (array.get(i).getKode_petak().equals("3")) {
-                node3.add(new Entry(i, Float.parseFloat(array.get(i).getKelembaban_tanah())));
+                node3.add(new Entry(secs, Float.parseFloat(array.get(i).getKelembaban_tanah())));
             }
         }
 
@@ -263,12 +317,24 @@ public class ChartSelectionActivity extends AppCompatActivity {
         ArrayList<Entry> node2 = new ArrayList<>();
         ArrayList<Entry> node3 = new ArrayList<>();
         for (int i = 0; i < size; i++) {
+            String dateString = array.get(i).getWaktu_sensing();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+
+            long secs = 0;
+            try {
+                Date date = sdf.parse(dateString);
+                secs = date.getTime()/1000;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             if (array.get(i).getKode_petak().equals("1")) {
-                node1.add(new Entry(i, Float.parseFloat(array.get(i).getSuhu_udara())));
+                node1.add(new Entry(secs, Float.parseFloat(array.get(i).getSuhu_udara())));
             } else if (array.get(i).getKode_petak().equals("2")) {
-                node2.add(new Entry(i, Float.parseFloat(array.get(i).getSuhu_udara())));
+                node2.add(new Entry(secs, Float.parseFloat(array.get(i).getSuhu_udara())));
             } else if (array.get(i).getKode_petak().equals("3")) {
-                node3.add(new Entry(i, Float.parseFloat(array.get(i).getSuhu_udara())));
+                node3.add(new Entry(secs, Float.parseFloat(array.get(i).getSuhu_udara())));
             }
         }
 
@@ -280,12 +346,24 @@ public class ChartSelectionActivity extends AppCompatActivity {
         ArrayList<Entry> node2 = new ArrayList<>();
         ArrayList<Entry> node3 = new ArrayList<>();
         for (int i = 0; i < size; i++) {
+            String dateString = array.get(i).getWaktu_sensing();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+
+            long secs = 0;
+            try {
+                Date date = sdf.parse(dateString);
+                secs = date.getTime()/1000;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             if (array.get(i).getKode_petak().equals("1")) {
-                node1.add(new Entry(i, Float.parseFloat(array.get(i).getKelembaban_udara())));
+                node1.add(new Entry(secs, Float.parseFloat(array.get(i).getKelembaban_udara())));
             } else if (array.get(i).getKode_petak().equals("2")) {
-                node2.add(new Entry(i, Float.parseFloat(array.get(i).getKelembaban_udara())));
+                node2.add(new Entry(secs, Float.parseFloat(array.get(i).getKelembaban_udara())));
             } else if (array.get(i).getKode_petak().equals("3")) {
-                node3.add(new Entry(i, Float.parseFloat(array.get(i).getKelembaban_udara())));
+                node3.add(new Entry(secs, Float.parseFloat(array.get(i).getKelembaban_udara())));
             }
         }
         setChartData(node1, node2, node3);

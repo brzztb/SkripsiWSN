@@ -8,12 +8,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AppAPI {
     //Emulator
     //10.0.2.2
+    //HP
+    //192.168.43.153
 
     private static Retrofit retrofit;
     public static Retrofit getRetrofit() {
         if(retrofit==null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:8000/")
+                    .baseUrl("http://192.168.18.212:8000/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
