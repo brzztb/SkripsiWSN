@@ -48,7 +48,9 @@ public class ChartSelectionActivity extends AppCompatActivity {
     TextView toolbarName;
     ImageView btn_back;
     private int posisiSpinner = 0;
+    SimpleDateFormat sdf;
     ChartMakerService cmService;
+
     String[] spinnerMenu = {"Ph Tanah",
             "Suhu Tanah",
             "Kelembaban Tanah",
@@ -71,7 +73,8 @@ public class ChartSelectionActivity extends AppCompatActivity {
         this.toolbarName.setText("My Chart");
 
         this.btn_back = findViewById(R.id.btn_back);
-
+        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
         this.btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -229,8 +232,6 @@ public class ChartSelectionActivity extends AppCompatActivity {
         for (int i = 0; i < size; i++) {
 
             String dateString = array.get(i).getWaktu_sensing();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
 
             long secs = 0;
             try {
@@ -248,9 +249,7 @@ public class ChartSelectionActivity extends AppCompatActivity {
                 node3.add(new Entry(secs, Float.parseFloat(array.get(i).getPh_tanah())));
             }
         }
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM");
-//        long date2 = new Date().getTime();
-//        String a = sdf.format(date2);
+
         setChartData(node1, node2, node3);
     }
 
@@ -260,8 +259,6 @@ public class ChartSelectionActivity extends AppCompatActivity {
         ArrayList<Entry> node3 = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             String dateString = array.get(i).getWaktu_sensing();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
 
             long secs = 0;
             try {
@@ -289,8 +286,6 @@ public class ChartSelectionActivity extends AppCompatActivity {
         ArrayList<Entry> node3 = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             String dateString = array.get(i).getWaktu_sensing();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
 
             long secs = 0;
             try {
@@ -318,8 +313,6 @@ public class ChartSelectionActivity extends AppCompatActivity {
         ArrayList<Entry> node3 = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             String dateString = array.get(i).getWaktu_sensing();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
 
             long secs = 0;
             try {
@@ -347,8 +340,6 @@ public class ChartSelectionActivity extends AppCompatActivity {
         ArrayList<Entry> node3 = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             String dateString = array.get(i).getWaktu_sensing();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
 
             long secs = 0;
             try {

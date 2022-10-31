@@ -5,6 +5,9 @@ import androidx.fragment.app.FragmentActivity;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aplikasiwsn.R;
@@ -23,9 +26,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 
+import org.w3c.dom.Node;
+
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,9 +41,12 @@ import retrofit2.Response;
 public class MyCropActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    ImageView btn_back;
+    TextView toolbarName;
     private ActivityMyCropBinding binding;
     ArrayList<Petak> petakArrayList = new ArrayList<>();
     ArrayList<NodeLokasi> nodeLokasiArrayList = new ArrayList<>();
+//    HashMap<Integer, ArrayList<Petak>> hmPetak = new HashMap<Integer, ArrayList<Petak>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +54,17 @@ public class MyCropActivity extends FragmentActivity implements OnMapReadyCallba
 
         binding = ActivityMyCropBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        this.btn_back = findViewById(R.id.btn_back);
+        this.toolbarName = findViewById(R.id.tv_toolbar_name);
+        this.toolbarName.setText("My Crop");
+
+        this.btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         final ProgressDialog progressDialog = new ProgressDialog(MyCropActivity.this);
         progressDialog.setCancelable(false); // set cancelable to false
@@ -55,12 +76,24 @@ public class MyCropActivity extends FragmentActivity implements OnMapReadyCallba
             public void onResponse(Call<ArrayList<Petak>> call, Response<ArrayList<Petak>> response) {
                 petakArrayList = response.body();
 
+//                for (int i = 0; i < petakArrayList.size(); i++) {
+//                    int kodePetak = Integer.parseInt(petakArrayList.get(i).getKode_petak());
+//                    if (!hmPetak.containsKey(kodePetak)) {
+//                        hmPetak.put(kodePetak, new ArrayList<>());
+//                        hmPetak.get(kodePetak).add(petakArrayList.get(i));
+//                    }
+//                    else {
+//                        hmPetak.get(kodePetak).add(petakArrayList.get(i));
+//                    }
+//                }
+
                 NodeLokasiService nodeLokasiService = AppAPI.getRetrofit().create(NodeLokasiService.class);
                 nodeLokasiService.getNodeLokasi().enqueue(new Callback<ArrayList<NodeLokasi>>() {
                     @Override
                     public void onResponse(Call<ArrayList<NodeLokasi>> call, Response<ArrayList<NodeLokasi>> responseLokasi) {
                         progressDialog.dismiss();
                         nodeLokasiArrayList = responseLokasi.body();
+
                         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
                         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                                 .findFragmentById(R.id.map);
@@ -96,10 +129,6 @@ public class MyCropActivity extends FragmentActivity implements OnMapReadyCallba
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         PolygonOptions polygonOptions = new PolygonOptions();
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         for (int i = 0; i < petakArrayList.size(); i++) {
             LatLng latLng = new LatLng(Double.parseDouble(petakArrayList.get(i).getLintang()), Double.parseDouble(petakArrayList.get(i).getBujur()));
