@@ -188,6 +188,9 @@ public class HistoryActivity extends AppCompatActivity implements SearchView.OnQ
                     tanahArrayListData.get(i).setNama_node("Node " + tanahArrayListData.get(i).getKode_petak());
                 }
                 setDataInRecycleView();
+                searchView.setQuery("", false);
+                searchView.clearFocus();
+                searchView.setIconified(true);
             }
 
             @Override

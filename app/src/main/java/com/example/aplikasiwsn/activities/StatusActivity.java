@@ -48,7 +48,6 @@ public class StatusActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         statusAdapter = new RecycleViewStatusAdapter(this, nodeArrayListStatusData);
         recyclerView.setAdapter(statusAdapter);
-
         AppAPI.getRetrofit();
 
         this.btn_back = findViewById(R.id.btn_back);

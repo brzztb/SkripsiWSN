@@ -26,7 +26,9 @@ import com.example.aplikasiwsn.models.Tanah;
 import com.example.aplikasiwsn.services.ChartMakerService;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -249,7 +251,12 @@ public class ChartSelectionActivity extends AppCompatActivity {
                 node3.add(new Entry(secs, Float.parseFloat(array.get(i).getPh_tanah())));
             }
         }
-
+        YAxis leftAxis = mChart.getAxisLeft();
+        LimitLine ll = new LimitLine(7f, "Keasaman Netral");
+        ll.setLineWidth(0.5f);
+        ll.setLineColor(Color.BLACK);
+        ll.setTextColor(Color.BLACK);
+        leftAxis.addLimitLine(ll);
         setChartData(node1, node2, node3);
     }
 

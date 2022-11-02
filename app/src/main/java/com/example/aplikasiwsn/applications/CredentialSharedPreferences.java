@@ -10,6 +10,7 @@ public class CredentialSharedPreferences {
     private static final String KEY_LOGIN_DATE = "LOGIN_DATE";
     private static final String KEY_USERNAME = "USERNAME";
     private static final String KEY_TOKEN = "TOKEN";
+    private static final String JUMLAH_KODE_PETAK = "0";
 
     private Context context;
 
@@ -40,12 +41,22 @@ public class CredentialSharedPreferences {
         editor.commit();
     }
 
+    public void saveJumlahKodePetak(String jumlah) {
+        SharedPreferences.Editor editor = this.sharedPref.edit();
+        editor.putString(JUMLAH_KODE_PETAK, jumlah);
+        editor.commit();
+    }
+
     public String loadToken() {
         return sharedPref.getString(KEY_TOKEN, "NONE");
     }
 
     public Date loadLoginDate() {
         return new Date(sharedPref.getLong(KEY_LOGIN_DATE, 0));
+    }
+
+    public String loadJumlahKodePetak() {
+        return sharedPref.getString(JUMLAH_KODE_PETAK, "0");
     }
 
     public void clearCredential() {
