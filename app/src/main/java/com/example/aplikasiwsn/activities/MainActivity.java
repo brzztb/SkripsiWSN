@@ -12,6 +12,7 @@ import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.adapters.RecycleViewMenuAdapter;
 import com.example.aplikasiwsn.applications.CredentialSharedPreferences;
 import com.example.aplikasiwsn.connections.configs.AppAPI;
+import com.example.aplikasiwsn.services.NodeCountService;
 import com.example.aplikasiwsn.services.PetakCountService;
 
 import java.io.IOException;
@@ -40,14 +41,27 @@ public class MainActivity extends AppCompatActivity implements RecycleViewMenuAd
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 cd.saveJumlahKodePetak(response.body());
-                // data to populate the RecyclerView with
-                String[] data = {"Cek Status", "Sensing", "History", "My Crop", "My Chart", "Logout"};
 
-                // set up the RecyclerView
-                RecyclerView recyclerView = findViewById(R.id.rvMenu);
-                recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
-                menuAdapter = new RecycleViewMenuAdapter(MainActivity.this, data);
-                recyclerView.setAdapter(menuAdapter);
+                NodeCountService nodeCountService = AppAPI.getRetrofit().create(NodeCountService.class);
+                nodeCountService.getNodeCount().enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        cd.saveJumlahNodeSensing(response.body());
+                        // data to populate the RecyclerView with
+                        String[] data = {"Cek Status", "Sensing", "History", "My Crop", "My Chart", "Logout"};
+
+                        // set up the RecyclerView
+                        RecyclerView recyclerView = findViewById(R.id.rvMenu);
+                        recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+                        menuAdapter = new RecycleViewMenuAdapter(MainActivity.this, data);
+                        recyclerView.setAdapter(menuAdapter);
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
             }
 
             @Override

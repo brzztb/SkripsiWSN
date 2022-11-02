@@ -11,6 +11,7 @@ public class CredentialSharedPreferences {
     private static final String KEY_USERNAME = "USERNAME";
     private static final String KEY_TOKEN = "TOKEN";
     private static final String JUMLAH_KODE_PETAK = "0";
+    private static final String JUMLAH_NODE = "0";
 
     private Context context;
 
@@ -47,6 +48,12 @@ public class CredentialSharedPreferences {
         editor.commit();
     }
 
+    public void saveJumlahNodeSensing(String jumlah) {
+        SharedPreferences.Editor editor = this.sharedPref.edit();
+        editor.putString(JUMLAH_NODE, jumlah);
+        editor.commit();
+    }
+
     public String loadToken() {
         return sharedPref.getString(KEY_TOKEN, "NONE");
     }
@@ -57,6 +64,10 @@ public class CredentialSharedPreferences {
 
     public String loadJumlahKodePetak() {
         return sharedPref.getString(JUMLAH_KODE_PETAK, "0");
+    }
+
+    public String loadJumlahNode() {
+        return sharedPref.getString(JUMLAH_NODE, "0");
     }
 
     public void clearCredential() {
