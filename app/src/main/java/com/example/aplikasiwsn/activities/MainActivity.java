@@ -40,13 +40,14 @@ public class MainActivity extends AppCompatActivity implements RecycleViewMenuAd
         petakCountService.getPetakCount().enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
+
                 cd.saveJumlahKodePetak(response.body());
 
                 NodeCountService nodeCountService = AppAPI.getRetrofit().create(NodeCountService.class);
                 nodeCountService.getNodeCount().enqueue(new Callback<String>() {
                     @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        cd.saveJumlahNodeSensing(response.body());
+                    public void onResponse(Call<String> call, Response<String> responseNodeCount) {
+                        cd.saveJumlahNodeSensing(responseNodeCount.body());
                         // data to populate the RecyclerView with
                         String[] data = {"Cek Status", "Sensing", "History", "My Crop", "My Chart", "Logout"};
 

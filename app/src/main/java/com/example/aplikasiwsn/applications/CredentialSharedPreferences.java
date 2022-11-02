@@ -10,8 +10,8 @@ public class CredentialSharedPreferences {
     private static final String KEY_LOGIN_DATE = "LOGIN_DATE";
     private static final String KEY_USERNAME = "USERNAME";
     private static final String KEY_TOKEN = "TOKEN";
-    private static final String JUMLAH_KODE_PETAK = "0";
-    private static final String JUMLAH_NODE = "0";
+    private static final String JUMLAH_KODE_PETAK = "JUMLAH_KODE_PETAK";
+    private static final String JUMLAH_NODE_SENSING = "JUMLAH_NODE_SENSING";
 
     private Context context;
 
@@ -50,7 +50,7 @@ public class CredentialSharedPreferences {
 
     public void saveJumlahNodeSensing(String jumlah) {
         SharedPreferences.Editor editor = this.sharedPref.edit();
-        editor.putString(JUMLAH_NODE, jumlah);
+        editor.putString(JUMLAH_NODE_SENSING, jumlah);
         editor.commit();
     }
 
@@ -67,7 +67,7 @@ public class CredentialSharedPreferences {
     }
 
     public String loadJumlahNode() {
-        return sharedPref.getString(JUMLAH_NODE, "0");
+        return sharedPref.getString(JUMLAH_NODE_SENSING, "0");
     }
 
     public void clearCredential() {
