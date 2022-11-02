@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -17,7 +16,6 @@ import com.example.aplikasiwsn.activities.ChartSelectionActivity;
 import com.example.aplikasiwsn.activities.HistoryActivity;
 import com.example.aplikasiwsn.activities.LoginActivity;
 import com.example.aplikasiwsn.activities.MyCropActivity;
-import com.example.aplikasiwsn.activities.PhLineChartActivity;
 import com.example.aplikasiwsn.activities.SensingActivity;
 import com.example.aplikasiwsn.activities.StatusActivity;
 import com.example.aplikasiwsn.applications.CredentialSharedPreferences;
@@ -46,7 +44,6 @@ public class RecycleViewMenuAdapter extends RecyclerView.Adapter<RecycleViewMenu
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.rvMenuName.setText(mData[position]);
         holder.clMenu.setOnClickListener(view -> {
-//            Toast.makeText(holder.clMenu.getContext(), "posisi ke- " + position, Toast.LENGTH_LONG).show();
             Context context = view.getContext();
             Intent intent;
             switch (position) {

@@ -45,9 +45,6 @@
             android:name=".activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.PhLineChartActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.ChartSelectionActivity"
             android:exported="false"/>
     </application>
