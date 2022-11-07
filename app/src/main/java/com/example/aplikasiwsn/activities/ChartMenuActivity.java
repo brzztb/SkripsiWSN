@@ -2,6 +2,7 @@ package com.example.aplikasiwsn.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,6 +19,7 @@ import com.example.aplikasiwsn.R;
 public class ChartMenuActivity extends AppCompatActivity {
     ImageView btn_back;
     Button btnEnter;
+    private long mLastClickTime = 0;
     private int posisiSpinner = 0;
     Spinner spinner;
     String[] spinnerMenu = {"Ph Tanah",
@@ -51,6 +53,10 @@ public class ChartMenuActivity extends AppCompatActivity {
         this.btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 switch (posisiSpinner) {
                     case 0:
                         Intent intentPh = new Intent(ChartMenuActivity.this, ChartGraphPhActivity.class);

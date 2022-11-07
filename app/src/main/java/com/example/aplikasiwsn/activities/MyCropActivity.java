@@ -17,6 +17,7 @@ import com.example.aplikasiwsn.connections.configs.AppAPI;
 import com.example.aplikasiwsn.databinding.ActivityMyCropBinding;
 import com.example.aplikasiwsn.models.NodeLokasi;
 import com.example.aplikasiwsn.models.Petak;
+import com.example.aplikasiwsn.models.SenseSuhuUdara;
 import com.example.aplikasiwsn.services.NodeLokasiService;
 import com.example.aplikasiwsn.services.PetakService;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -49,7 +50,7 @@ public class MyCropActivity extends FragmentActivity implements OnMapReadyCallba
     ImageView btn_back;
     TextView toolbarName;
     private ActivityMyCropBinding binding;
-    ArrayList<Petak> petakArrayList = new ArrayList<>();
+    ProgressDialog progressDialog = null;
     ArrayList<NodeLokasi> nodeLokasiArrayList = new ArrayList<>();
     HashMap<Integer, ArrayList<Petak>> hpPetak = new HashMap<Integer, ArrayList<Petak>>();
     CredentialSharedPreferences cd;
@@ -75,7 +76,7 @@ public class MyCropActivity extends FragmentActivity implements OnMapReadyCallba
             }
         });
 
-        final ProgressDialog progressDialog = new ProgressDialog(MyCropActivity.this);
+        progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false); // set cancelable to false
         progressDialog.setMessage("Please Wait"); // set message
         progressDialog.show(); // show progress dialog
@@ -83,26 +84,6 @@ public class MyCropActivity extends FragmentActivity implements OnMapReadyCallba
         for (int i = 1; i <= jumlahPetak; i++) {
             new MyTask().execute(i);
         }
-
-        NodeLokasiService nodeLokasiService = AppAPI.getRetrofit().create(NodeLokasiService.class);
-        nodeLokasiService.getNodeLokasi().enqueue(new Callback<ArrayList<NodeLokasi>>() {
-            @Override
-            public void onResponse(Call<ArrayList<NodeLokasi>> call, Response<ArrayList<NodeLokasi>> responseLokasi) {
-                progressDialog.dismiss();
-                nodeLokasiArrayList = responseLokasi.body();
-
-                // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.map);
-                mapFragment.getMapAsync(MyCropActivity.this);
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<NodeLokasi>> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(MyCropActivity.this, "Load data failed", Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     /**
@@ -145,6 +126,7 @@ public class MyCropActivity extends FragmentActivity implements OnMapReadyCallba
         float zoomLevel = 16.0f;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(nodeLokasiArrayList.get(0).getLintang()), Double.parseDouble(nodeLokasiArrayList.get(0).getBujur())), zoomLevel));
+        progressDialog.dismiss();
     }
 
     private class MyTask extends AsyncTask<Integer, Void, Void> {
@@ -158,6 +140,30 @@ public class MyCropActivity extends FragmentActivity implements OnMapReadyCallba
                 e.printStackTrace();
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            if (hpPetak.size()==jumlahPetak) {
+                NodeLokasiService nodeLokasiService = AppAPI.getRetrofit().create(NodeLokasiService.class);
+                nodeLokasiService.getNodeLokasi().enqueue(new Callback<ArrayList<NodeLokasi>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<NodeLokasi>> call, Response<ArrayList<NodeLokasi>> responseLokasi) {
+                        nodeLokasiArrayList = responseLokasi.body();
+
+                        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+                        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                                .findFragmentById(R.id.map);
+                        mapFragment.getMapAsync(MyCropActivity.this);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<NodeLokasi>> call, Throwable t) {
+                        Toast.makeText(MyCropActivity.this, "Load data failed", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
         }
     }
 }
