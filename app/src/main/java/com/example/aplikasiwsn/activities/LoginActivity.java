@@ -16,9 +16,6 @@ import com.example.aplikasiwsn.connections.configs.AppAPI;
 import com.example.aplikasiwsn.models.User;
 import com.example.aplikasiwsn.services.LoginService;
 
-import java.util.ArrayList;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -76,7 +73,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
             }
-
         });
     }
 }

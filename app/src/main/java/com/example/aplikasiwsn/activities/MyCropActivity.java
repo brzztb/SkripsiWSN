@@ -17,7 +17,6 @@ import com.example.aplikasiwsn.connections.configs.AppAPI;
 import com.example.aplikasiwsn.databinding.ActivityMyCropBinding;
 import com.example.aplikasiwsn.models.NodeLokasi;
 import com.example.aplikasiwsn.models.Petak;
-import com.example.aplikasiwsn.models.SenseSuhuUdara;
 import com.example.aplikasiwsn.services.NodeLokasiService;
 import com.example.aplikasiwsn.services.PetakService;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -30,14 +29,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 
-import org.w3c.dom.Node;
-
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -138,6 +132,7 @@ public class MyCropActivity extends FragmentActivity implements OnMapReadyCallba
                 hpPetak.put(integers[0], pService.getPetak(integers[0]).execute().body());
             } catch (IOException e) {
                 e.printStackTrace();
+                Toast.makeText(MyCropActivity.this, "AsyncTask failed", Toast.LENGTH_LONG).show();
             }
             return null;
         }

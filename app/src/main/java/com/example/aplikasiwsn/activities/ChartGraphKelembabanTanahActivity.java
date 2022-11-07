@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -121,7 +122,7 @@ public class ChartGraphKelembabanTanahActivity extends AppCompatActivity {
                             ChartGraphAsyncTask chartGraphAsyncTask = new ChartGraphAsyncTask();
                             chartGraphAsyncTask.execute();
                         } catch (Exception e) {
-                            // error, do something
+                            Toast.makeText(ChartGraphKelembabanTanahActivity.this, "AsyncTask failed", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -151,6 +152,7 @@ public class ChartGraphKelembabanTanahActivity extends AppCompatActivity {
                 return arrKelembabanTanah;
             } catch (IOException e) {
                 e.printStackTrace();
+                Toast.makeText(ChartGraphKelembabanTanahActivity.this, "Load data failed", Toast.LENGTH_LONG).show();
             }
             return arrKelembabanTanah;
         }

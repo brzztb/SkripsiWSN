@@ -1,6 +1,5 @@
 package com.example.aplikasiwsn.activities;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,19 +16,12 @@ import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.adapters.RecycleViewSensingAdapter;
 import com.example.aplikasiwsn.connections.configs.AppAPI;
 import com.example.aplikasiwsn.models.Tanah;
-import com.example.aplikasiwsn.services.NodeService;
 import com.example.aplikasiwsn.services.SensingService;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SensingActivity extends AppCompatActivity {
 
@@ -62,27 +54,6 @@ public class SensingActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
-//        SensingService sensingService = AppAPI.getRetrofit().create(SensingService.class);
-//
-//        final ProgressDialog progressDialog = new ProgressDialog(SensingActivity.this);
-//        progressDialog.setCancelable(false); // set cancelable to false
-//        progressDialog.setMessage("Please Wait"); // set message
-//        progressDialog.show(); // show progress dialog
-//
-//        sensingService.getSensing().enqueue(new Callback<ArrayList<Tanah>>() {
-//            @Override
-//            public void onResponse(Call<ArrayList<Tanah>> call, Response<ArrayList<Tanah>> response) {
-//                progressDialog.dismiss();
-//                sensingAdapter.changeData(response.body());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ArrayList<Tanah>> call, Throwable t) {
-//                Toast.makeText(SensingActivity.this, "Load data failed", Toast.LENGTH_LONG).show();
-//                progressDialog.dismiss(); //dismiss progress dialog
-//            }
-//        });
         setRepeatingAsyncTask();
     }
 
@@ -99,7 +70,7 @@ public class SensingActivity extends AppCompatActivity {
                             SensingAsyncTask sensingAsyncTask = new SensingAsyncTask();
                             sensingAsyncTask.execute();
                         } catch (Exception e) {
-                            // error, do something
+                            Toast.makeText(SensingActivity.this, "AsyncTask failed", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -121,6 +92,7 @@ public class SensingActivity extends AppCompatActivity {
                 return sensingService.getSensing().execute().body();
             } catch (IOException e) {
                 e.printStackTrace();
+                Toast.makeText(SensingActivity.this, "Load data failed", Toast.LENGTH_LONG).show();
             }
             return new ArrayList<Tanah>();
         }

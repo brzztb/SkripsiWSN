@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -120,7 +121,7 @@ public class ChartGraphPhActivity extends AppCompatActivity {
                             ChartGraphAsyncTask chartGraphAsyncTask = new ChartGraphAsyncTask();
                             chartGraphAsyncTask.execute();
                         } catch (Exception e) {
-                            // error, do something
+                            Toast.makeText(ChartGraphPhActivity.this, "AsyncTask Failed", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -150,6 +151,7 @@ public class ChartGraphPhActivity extends AppCompatActivity {
                 return arrKeasaman;
             } catch (IOException e) {
                 e.printStackTrace();
+                Toast.makeText(ChartGraphPhActivity.this, "Load data failed", Toast.LENGTH_LONG).show();
             }
             return arrKeasaman;
         }

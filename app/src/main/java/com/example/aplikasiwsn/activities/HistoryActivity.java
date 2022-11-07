@@ -18,20 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.adapters.RecycleViewHistoryAdapter;
 import com.example.aplikasiwsn.connections.configs.AppAPI;
-import com.example.aplikasiwsn.models.NodeSensor;
 import com.example.aplikasiwsn.models.Tanah;
 import com.example.aplikasiwsn.services.TanahService;
 
 import java.util.ArrayList;
-import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public class HistoryActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, AdapterView.OnItemSelectedListener{
     private boolean sortDesc = true;

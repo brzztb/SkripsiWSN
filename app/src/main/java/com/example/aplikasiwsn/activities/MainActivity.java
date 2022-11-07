@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.adapters.RecycleViewMenuAdapter;
@@ -14,8 +15,6 @@ import com.example.aplikasiwsn.applications.CredentialSharedPreferences;
 import com.example.aplikasiwsn.connections.configs.AppAPI;
 import com.example.aplikasiwsn.services.NodeCountService;
 import com.example.aplikasiwsn.services.PetakCountService;
-
-import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,14 +59,14 @@ public class MainActivity extends AppCompatActivity implements RecycleViewMenuAd
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-
+                        Toast.makeText(MainActivity.this, "Load data failed", Toast.LENGTH_LONG).show();
                     }
                 });
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
+                Toast.makeText(MainActivity.this, "Load data failed", Toast.LENGTH_LONG).show();
             }
         });
     }

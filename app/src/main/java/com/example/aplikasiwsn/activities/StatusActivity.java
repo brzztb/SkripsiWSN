@@ -1,13 +1,11 @@
 package com.example.aplikasiwsn.activities;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,16 +17,10 @@ import com.example.aplikasiwsn.connections.configs.AppAPI;
 import com.example.aplikasiwsn.models.NodeSensorStatus;
 import com.example.aplikasiwsn.services.NodeService;
 
-import org.w3c.dom.Node;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class StatusActivity extends AppCompatActivity {
 

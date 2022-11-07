@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.aplikasiwsn.R;
 
-
 public class ChartMenuActivity extends AppCompatActivity {
     ImageView btn_back;
     Button btnEnter;
