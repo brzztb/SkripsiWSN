@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,6 +37,8 @@ public class ChartMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart_main_menu);
 
+        TextView toolbar = findViewById(R.id.tv_toolbar_name);
+        toolbar.setText("Chart Menu");
         this.btn_back = findViewById(R.id.btn_back);
         this.btnEnter = findViewById(R.id.btn_enter);
 

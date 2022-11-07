@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -57,6 +58,8 @@ public class ChartGraphKelembabanTanahActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart_graph);
 
+        TextView toolbar = findViewById(R.id.tv_toolbar_name);
+        toolbar.setText("Kelembaban Tanah");
         cred = new CredentialSharedPreferences(this);
         mChart = (LineChart) findViewById(R.id.linechart_graph);
         mChart.getXAxis().setEnabled(false);
