@@ -12,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aplikasiwsn.R;
-import com.example.aplikasiwsn.activities.ChartSelectionActivity;
+import com.example.aplikasiwsn.activities.ChartMenuActivity;
 import com.example.aplikasiwsn.activities.HistoryActivity;
 import com.example.aplikasiwsn.activities.LoginActivity;
 import com.example.aplikasiwsn.activities.MyCropActivity;
@@ -64,7 +64,7 @@ public class RecycleViewMenuAdapter extends RecyclerView.Adapter<RecycleViewMenu
                     context.startActivity(intent);
                     break;
                 case 4:
-                    intent = new Intent(context, ChartSelectionActivity.class);
+                    intent = new Intent(context, ChartMenuActivity.class);
                     context.startActivity(intent);
                     break;
                 case 5:

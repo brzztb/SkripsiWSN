@@ -45,7 +45,22 @@
             android:name=".activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.ChartSelectionActivity"
+            android:name=".activities.ChartMenuActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".activities.ChartGraphPhActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".activities.ChartGraphSuhuTanahActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".activities.ChartGraphKelembabanTanahActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".activities.ChartGraphSuhuUdaraActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".activities.ChartGraphKelembabanUdaraActivity"
             android:exported="false"/>
     </application>
 

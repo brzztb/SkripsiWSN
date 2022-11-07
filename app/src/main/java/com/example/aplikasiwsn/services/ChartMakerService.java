@@ -15,7 +15,7 @@ import retrofit2.http.Query;
 
 public interface ChartMakerService {
     @GET("makechart")
-    Call<ArrayList<SenseKeasaman>> getChartData(@Query("spinner") String spinnerMenu);
+    Call<ArrayList<SenseKeasaman>> getKeasamanChartData(@Query("spinner") String spinnerMenu);
 
     @GET("makechart")
     Call<ArrayList<SenseSuhuTanah>> getSuhuTanahChartData(@Query("spinner") String spinnerMenu);

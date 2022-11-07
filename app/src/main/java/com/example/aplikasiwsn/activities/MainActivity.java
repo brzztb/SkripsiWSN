@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements RecycleViewMenuAd
                     public void onResponse(Call<String> call, Response<String> responseNodeCount) {
                         cd.saveJumlahNodeSensing(responseNodeCount.body());
                         // data to populate the RecyclerView with
-                        String[] data = {"Cek Status", "Sensing", "History", "My Crop", "My Chart", "Logout"};
+                        String[] data = {"Cek Status", "Sensing", "History", "My Crop", "Chart Menu", "Logout"};
 
                         // set up the RecyclerView
                         RecyclerView recyclerView = findViewById(R.id.rvMenu);

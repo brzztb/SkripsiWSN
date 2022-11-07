@@ -15,7 +15,7 @@ public class AppAPI {
     public static Retrofit getRetrofit() {
         if(retrofit==null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.100.170:8000/")
+                    .baseUrl("http://10.0.2.2:8000/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
