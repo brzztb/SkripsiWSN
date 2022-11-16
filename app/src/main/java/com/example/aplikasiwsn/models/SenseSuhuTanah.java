@@ -5,6 +5,12 @@ public class SenseSuhuTanah {
     private String suhu_tanah;
     private String waktu_sensing;
 
+    public SenseSuhuTanah(String kode_petak, String suhu_tanah, String waktu_sensing) {
+        this.kode_petak = kode_petak;
+        this.suhu_tanah = suhu_tanah;
+        this.waktu_sensing = waktu_sensing;
+    }
+
     public String getKode_petak() {
         return kode_petak;
     }

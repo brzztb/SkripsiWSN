@@ -16,42 +16,47 @@ import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.applications.CredentialSharedPreferences;
 import com.example.aplikasiwsn.connections.configs.AppAPI;
 import com.example.aplikasiwsn.models.LineChartXAxisValueFormatter;
-import com.example.aplikasiwsn.models.NodeSensorStatus;
-import com.example.aplikasiwsn.models.Petak;
-import com.example.aplikasiwsn.models.SenseKeasaman;
 import com.example.aplikasiwsn.models.SenseKelembabanTanah;
 import com.example.aplikasiwsn.services.ChartMakerService;
-import com.example.aplikasiwsn.services.NodeService;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChartGraphKelembabanTanahActivity extends AppCompatActivity {
     private LineChart mChart;
     ArrayList<SenseKelembabanTanah> arrKelembabanTanah = new ArrayList<>();
     List<LineDataSet> arrLineDataSet = new ArrayList<>();
     List<Integer> arrColors = new ArrayList<>();
+    SimpleDateFormat sdf;
     LineData lineData;
     ImageView btn_back;
     String isiSpinner;
     CredentialSharedPreferences cred;
     Timer timer;
     TimerTask task;
-    int count = 0;
     LineDataSet set;
+    boolean done = true;
+    HashMap<String, String> sinceList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,17 +64,21 @@ public class ChartGraphKelembabanTanahActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart_graph);
 
+        sinceList = new HashMap<>();
         TextView toolbar = findViewById(R.id.tv_toolbar_name);
         toolbar.setText("Kelembaban Tanah");
+        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
         cred = new CredentialSharedPreferences(this);
         mChart = (LineChart) findViewById(R.id.linechart_graph);
-        mChart.getXAxis().setEnabled(false);
+        mChart.getXAxis().setEnabled(true);
+        mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        mChart.getXAxis().setValueFormatter(new LineChartXAxisValueFormatter());
         mChart.animateX(3000);
         Description desc = new Description();
         desc.setText("Kelembaban Tanah");
         mChart.setDescription(desc);
         lineData = new LineData();
-
         this.btn_back = findViewById(R.id.btn_back);
         this.btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,37 +90,46 @@ public class ChartGraphKelembabanTanahActivity extends AppCompatActivity {
         Intent intent = getIntent();
         isiSpinner = intent.getStringExtra("isiSpinner");
 
-        for (int i = 0; i < Integer.parseInt(cred.loadJumlahNode()); i++) {
-            arrKelembabanTanah.add(new SenseKelembabanTanah());
-            ArrayList<Entry> node = new ArrayList<>();
-            node.add(new Entry());
-            arrLineDataSet.add(new LineDataSet(node, "Node " + (i+1)));
-            Random rnd = new Random();
-            int thisColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-            arrColors.add(thisColor);
-            arrLineDataSet.get(i).setColor(thisColor);
-            lineData.addDataSet(arrLineDataSet.get(i));
-        }
+        ChartMakerService chartMakerService = AppAPI.getRetrofit().create(ChartMakerService.class);
+        chartMakerService.getKelembabanTanahChartData(isiSpinner, sinceList).enqueue(new Callback<ArrayList<SenseKelembabanTanah>>() {
+            @Override
+            public void onResponse(Call<ArrayList<SenseKelembabanTanah>> call, Response<ArrayList<SenseKelembabanTanah>> response) {
+                ArrayList<SenseKelembabanTanah> arrayList = response.body();
+                for (int i = 0; i < Integer.parseInt(cred.loadJumlahNode()); i++) {
+                    arrKelembabanTanah.add(new SenseKelembabanTanah(arrayList.get(i).getKode_petak(), arrayList.get(i).getKelembaban_tanah(), arrayList.get(i).getWaktu_sensing()));
+                    ArrayList<Entry> node = new ArrayList<>();
+                    String secsStr = arrayList.get(i).getWaktu_sensing();
+                    node.add(new Entry(getSecond(secsStr), Float.parseFloat(arrayList.get(i).getKelembaban_tanah())));
+                    arrLineDataSet.add(new LineDataSet(node, "Node " + (i + 1)));
+                    Random rnd = new Random();
+                    int thisColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+                    arrColors.add(thisColor);
+                    arrLineDataSet.get(i).setColor(thisColor);
+                    lineData.addDataSet(arrLineDataSet.get(i));
+                    sinceList.put(String.format("since[%d]", Integer.parseInt(arrayList.get(i).getKode_petak())), arrayList.get(i).getWaktu_sensing());
+                }
+                for (int i = 0; i < arrLineDataSet.size(); i++) {
+                    arrLineDataSet.get(i).setLineWidth(3f);
+//                    arrLineDataSet.get(i).setDrawCircles(false);
+                    arrLineDataSet.get(i).setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                    arrLineDataSet.get(i).setCubicIntensity(0.2f);
+//                    arrLineDataSet.get(i).setDrawValues(false);
+                    arrLineDataSet.get(i).setCircleHoleRadius(10f);
+                }
+                mChart.setData(lineData);
+                setRepeatingAsyncTask();
+            }
 
-        for (int i = 0; i < arrLineDataSet.size(); i++) {
-            arrLineDataSet.get(i).setLineWidth(5f);
-            arrLineDataSet.get(i).setDrawCircles(false);
-            arrLineDataSet.get(i).setMode(LineDataSet.Mode.CUBIC_BEZIER);
-            arrLineDataSet.get(i).setCubicIntensity(0.2f);
-            arrLineDataSet.get(i).setDrawValues(false);
-            arrLineDataSet.get(i).setCircleHoleRadius(10f);
-//            arrLineDataSet.get(i).setDrawFilled(true);
-//            arrLineDataSet.get(i).setFillColor(arrColors.get(i));
-//            arrLineDataSet.get(i).setFillAlpha(80);
-        }
+            @Override
+            public void onFailure(Call<ArrayList<SenseKelembabanTanah>> call, Throwable t) {
 
-        mChart.setData(lineData);
-        setRepeatingAsyncTask();
+            }
+        });
     }
 
     private void setRepeatingAsyncTask() {
         final Handler handler = new Handler();
-        timer =  new Timer();
+        timer = new Timer();
 
         task = new TimerTask() {
             @Override
@@ -119,21 +137,19 @@ public class ChartGraphKelembabanTanahActivity extends AppCompatActivity {
                 handler.post(new Runnable() {
                     public void run() {
                         try {
-                            ChartGraphAsyncTask chartGraphAsyncTask = new ChartGraphAsyncTask();
-                            chartGraphAsyncTask.execute();
+                            if (done) {
+                                done = false;
+                                ChartGraphKelembabanTanahActivity.ChartGraphAsyncTask chartGraphAsyncTask = new ChartGraphAsyncTask();
+                                chartGraphAsyncTask.execute();
+                            }
                         } catch (Exception e) {
-                            Toast.makeText(ChartGraphKelembabanTanahActivity.this, "AsyncTask failed", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ChartGraphKelembabanTanahActivity.this, "AsyncTask Failed", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
             }
         };
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        timer.schedule(task, 0, 1*1000);  // interval of one minute
+        timer.schedule(task, 0, 1 * 10000);  // interval of one minute
     }
 
     private class ChartGraphAsyncTask extends AsyncTask<String, Void, ArrayList<SenseKelembabanTanah>> {
@@ -141,16 +157,25 @@ public class ChartGraphKelembabanTanahActivity extends AppCompatActivity {
         protected ArrayList<SenseKelembabanTanah> doInBackground(String... strings) {
             ChartMakerService chartMakerService = AppAPI.getRetrofit().create(ChartMakerService.class);
             try {
-                ArrayList<SenseKelembabanTanah> arrTemp = chartMakerService.getKelembabanTanahChartData(isiSpinner).execute().body();
+                ArrayList<SenseKelembabanTanah> arrTemp = chartMakerService.getKelembabanTanahChartData(isiSpinner, sinceList).execute().body();
                 for (int i = 0; i < arrTemp.size(); i++) {
-                    arrKelembabanTanah.get(i).setKode_petak(arrTemp.get(i).getKode_petak());
-                    arrKelembabanTanah.get(i).setKelembaban_tanah(arrTemp.get(i).getKelembaban_tanah());
-                    arrKelembabanTanah.get(i).setWaktu_sensing(arrTemp.get(i).getWaktu_sensing());
-                    addEntry(i);
+                    int kodePetak = Integer.parseInt(arrTemp.get(i).getKode_petak());
+
+                    arrKelembabanTanah.get(kodePetak - 1).setKode_petak(arrTemp.get(i).getKode_petak());
+                    arrKelembabanTanah.get(kodePetak - 1).setKelembaban_tanah(arrTemp.get(i).getKelembaban_tanah());
+                    arrKelembabanTanah.get(kodePetak - 1).setWaktu_sensing(arrTemp.get(i).getWaktu_sensing());
+
+                    if (sdf.parse(arrKelembabanTanah.get(kodePetak - 1).getWaktu_sensing()).after(sdf.parse(sinceList.get(String.format("since[%d]", kodePetak))))) {
+                        sinceList.put(String.format("since[%d]", kodePetak), arrKelembabanTanah.get(kodePetak - 1).getWaktu_sensing());
+                    }
+                    LineData data = mChart.getLineData();
+                    set = (LineDataSet) data.getDataSetByIndex(kodePetak - 1);
+                    set.addEntry(new Entry(getSecond(arrKelembabanTanah.get(kodePetak - 1).getWaktu_sensing()), Float.parseFloat(arrKelembabanTanah.get(kodePetak - 1).getKelembaban_tanah())));
+                    data.notifyDataChanged();
+                    mChart.notifyDataSetChanged();
                 }
-                count++;
                 return arrKelembabanTanah;
-            } catch (IOException e) {
+            } catch (IOException | ParseException e) {
                 e.printStackTrace();
                 Toast.makeText(ChartGraphKelembabanTanahActivity.this, "Load data failed", Toast.LENGTH_LONG).show();
             }
@@ -160,6 +185,7 @@ public class ChartGraphKelembabanTanahActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ArrayList<SenseKelembabanTanah> result) {
             mChart.invalidate();
+            done = true;
         }
     }
 
@@ -169,13 +195,20 @@ public class ChartGraphKelembabanTanahActivity extends AppCompatActivity {
         timer.cancel();
     }
 
-    private void addEntry(int index) {
-        LineData data = mChart.getLineData();
-        if(data != null) {
-            set = (LineDataSet) data.getDataSetByIndex(index);
-            set.addEntry(new Entry(count,Float.parseFloat(arrKelembabanTanah.get(index).getKelembaban_tanah())));
-            data.notifyDataChanged();
-            mChart.notifyDataSetChanged();
+    public long getSecond(String s) {
+        long selisih = 0;
+        try {
+            Date dateNow = new Date();
+            Calendar today = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
+            today.set(Calendar.HOUR_OF_DAY, 0);
+            today.set(Calendar.MINUTE, 0);
+            today.set(Calendar.SECOND, 0);
+
+            Date d = sdf.parse(s);
+            selisih = d.getTime() - today.getTime().getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
+        return selisih;
     }
 }

@@ -5,6 +5,12 @@ public class SenseKeasaman {
     private String ph_tanah;
     private String waktu_sensing;
 
+    public SenseKeasaman(String kode_petak, String ph_tanah, String waktu_sensing) {
+        this.kode_petak = kode_petak;
+        this.ph_tanah = ph_tanah;
+        this.waktu_sensing = waktu_sensing;
+    }
+
     public String getKode_petak() {
         return kode_petak;
     }

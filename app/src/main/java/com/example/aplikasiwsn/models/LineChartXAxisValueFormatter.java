@@ -6,22 +6,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 public class LineChartXAxisValueFormatter extends IndexAxisValueFormatter {
     @Override
     public String getFormattedValue(float value) {
-
-        // Convert float value to date string
-        // Convert from seconds back to milliseconds to format time  to show to the user
-        long emissionsMilliSince1970Time = ((long) value) * 1000;
-
-        // Show time in local version
-        Date timeMilliseconds = new Date(emissionsMilliSince1970Time);
-        DateFormat dateTimeFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
-        return sdf.format(new Date(emissionsMilliSince1970Time));
-
-//        return dateTimeFormat.format(timeMilliseconds);
+        long jam = TimeUnit.MILLISECONDS.toHours((long) value);
+        long menit = TimeUnit.MILLISECONDS.toMinutes((long)value - (jam*60*60*1000));
+        long detik = TimeUnit.MILLISECONDS.toSeconds((long)value - (jam*60*60*1000) - (menit*60*1000));
+        String waktu = jam + ":" + menit + ":" + detik;
+        return waktu;
     }
 }

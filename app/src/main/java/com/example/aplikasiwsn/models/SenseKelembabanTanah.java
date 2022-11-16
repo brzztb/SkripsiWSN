@@ -5,6 +5,12 @@ public class SenseKelembabanTanah {
     private String kelembaban_tanah;
     private String waktu_sensing;
 
+    public SenseKelembabanTanah(String kode_petak, String kelembaban_tanah, String waktu_sensing) {
+        this.kode_petak = kode_petak;
+        this.kelembaban_tanah = kelembaban_tanah;
+        this.waktu_sensing = waktu_sensing;
+    }
+
     public String getKode_petak() {
         return kode_petak;
     }
