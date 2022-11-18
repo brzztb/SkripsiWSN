@@ -41,31 +41,25 @@ public class RecycleViewSensingAdapter extends RecyclerView.Adapter<RecycleViewS
 
     @Override
     public void onBindViewHolder(@NonNull RecycleViewSensingAdapter.ViewHolder holder, int position) {
-        if (nodes.get(position).getKode_petak().equalsIgnoreCase("1")) {
-            holder.img_sensing.setImageResource(R.drawable.arduino2550);
-        }
-        else if (nodes.get(position).getKode_petak().equalsIgnoreCase("2")){
-            holder.img_sensing.setImageResource(R.drawable.arduino2550);
-        }
-        else if (nodes.get(position).getKode_petak().equalsIgnoreCase("3")){
-            holder.img_sensing.setImageResource(R.drawable.arduino2550);
-        }
 
-        String namaNode = "Node " + nodes.get(position).getKode_petak();
-        String keasaman = nodes.get(position).getPh_tanah();
-        String kelembabanTanah = nodes.get(position).getKelembaban_tanah();
-        String suhuTanah = nodes.get(position).getSuhu_tanah();
-        String suhuUdara = nodes.get(position).getSuhu_udara();
-        String waktu = nodes.get(position).getWaktu_sensing();
-        String kelembabanUdara = nodes.get(position).getKelembaban_udara();
+        if (nodes.get(position).getId_tanah()!=null) {
+            String namaNode = "Node " + nodes.get(position).getKode_petak();
+            String keasaman = nodes.get(position).getPh_tanah();
+            String kelembabanTanah = nodes.get(position).getKelembaban_tanah();
+            String suhuTanah = nodes.get(position).getSuhu_tanah();
+            String suhuUdara = nodes.get(position).getSuhu_udara();
+            String waktu = nodes.get(position).getWaktu_sensing();
+            String kelembabanUdara = nodes.get(position).getKelembaban_udara();
 
-        holder.tv_rvsensing_name.setText(namaNode);
-        holder.tv_rvsensing_keasaman_text.setText(keasaman);
-        holder.tv_rvsensing_kelembaban_text.setText(kelembabanTanah);
-        holder.tv_rvsensing_tanah_text.setText(suhuTanah);
-        holder.tv_rvsensing_udara_text.setText(suhuUdara);
-        holder.tv_rvsensing_kelembaban_udara_text.setText(kelembabanUdara);
-        holder.tv_rvsensing_waktu_text.setText(waktu);
+            holder.img_sensing.setImageResource(R.drawable.arduino2550);
+            holder.tv_rvsensing_name.setText(namaNode);
+            holder.tv_rvsensing_keasaman_text.setText(keasaman);
+            holder.tv_rvsensing_kelembaban_text.setText(kelembabanTanah);
+            holder.tv_rvsensing_tanah_text.setText(suhuTanah);
+            holder.tv_rvsensing_udara_text.setText(suhuUdara);
+            holder.tv_rvsensing_kelembaban_udara_text.setText(kelembabanUdara);
+            holder.tv_rvsensing_waktu_text.setText(waktu);
+        }
     }
 
     // total number of cells
@@ -118,7 +112,7 @@ public class RecycleViewSensingAdapter extends RecyclerView.Adapter<RecycleViewS
     }
 
     public void changeData(ArrayList<Tanah> tanah) {
-        this.nodes = tanah;
+        nodes = tanah;
         notifyDataSetChanged();
     }
 }
