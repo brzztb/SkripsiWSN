@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.aplikasiwsn.R;
 import com.example.aplikasiwsn.adapters.RecycleViewStatusAdapter;
 import com.example.aplikasiwsn.connections.configs.AppAPI;
+import com.example.aplikasiwsn.models.NodeSensorEtag;
 import com.example.aplikasiwsn.models.NodeSensorStatus;
 import com.example.aplikasiwsn.services.NodeService;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,8 +30,10 @@ public class StatusActivity extends AppCompatActivity {
     ImageView btn_back;
     TextView toolbarName;
     private ArrayList<NodeSensorStatus> nodeArrayListStatusData = new ArrayList<>();
+    private NodeSensorEtag nodeSensorEtag;
     Timer timer;
     TimerTask task;
+    String hash = "NONE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +113,9 @@ public class StatusActivity extends AppCompatActivity {
         protected ArrayList<NodeSensorStatus> doInBackground(String... strings) {
             NodeService nodeService = AppAPI.getRetrofit().create(NodeService.class);
             try {
-                return nodeService.getNodeSensor().execute().body();
+                NodeSensorEtag temp = nodeService.getNodeSensor(hash).execute().body();
+                hash = temp.getEtag();
+                return temp.getNodes();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -118,7 +124,9 @@ public class StatusActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<NodeSensorStatus> result) {
-            statusAdapter.changeData(result);
+            if (result.size() != 0) {
+                statusAdapter.changeData(result);
+            }
         }
     }
 
