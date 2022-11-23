@@ -152,7 +152,7 @@ public class ChartGraphPhActivity extends AppCompatActivity {
                 });
             }
         };
-        timer.schedule(task, 0, 1 * 10000);  // interval of one minute
+        timer.schedule(task, 0, 1 * 5000);  // interval of one minute
     }
 
     private class ChartGraphAsyncTask extends AsyncTask<String, Void, ArrayList<SenseKeasaman>> {
